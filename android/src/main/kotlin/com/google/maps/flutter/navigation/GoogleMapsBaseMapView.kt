@@ -37,6 +37,7 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.Polygon
 import com.google.android.gms.maps.model.Polyline
+import com.google.android.gms.maps.model.TileOverlayOptions
 import kotlin.math.roundToInt
 
 abstract class GoogleMapsBaseMapView(
@@ -50,6 +51,7 @@ abstract class GoogleMapsBaseMapView(
   private val _polygons = mutableListOf<PolygonController>()
   private val _polylines = mutableListOf<PolylineController>()
   private val _circles = mutableListOf<CircleController>()
+  private val _tileOverlays = mutableListOf<TileOverlayController>()
 
   // Store preferred zoom values here because MapView getMinZoom and
   // getMaxZoom always return min/max possible values and not the preferred ones.
@@ -896,6 +898,8 @@ abstract class GoogleMapsBaseMapView(
     _polygons.clear()
     _polylines.clear()
     _circles.clear()
+    _tileOverlays.forEach { it.remove() }
+    _tileOverlays.clear()
   }
 
   fun getPolygons(): List<PolygonDto> {
@@ -1081,6 +1085,105 @@ abstract class GoogleMapsBaseMapView(
   fun clearCircles() {
     _circles.forEach { controller -> controller.remove() }
     _circles.clear()
+  }
+
+  private fun findTileOverlayController(tileOverlayId: String): TileOverlayController? {
+    return _tileOverlays.find { it.tileOverlayId == tileOverlayId }
+  }
+
+  fun getTileOverlays(): List<TileOverlayDto> {
+    return _tileOverlays.map {
+      TileOverlayDto(
+        it.tileOverlayId,
+        TileOverlayOptionsDto(
+          urlTemplate = it.urlTemplate,
+          tileSize = it.tileSize.toLong(),
+          zIndex = it.tileOverlay.zIndex.toDouble(),
+          transparency = it.tileOverlay.transparency.toDouble(),
+          visible = it.tileOverlay.isVisible,
+          fadeIn = it.tileOverlay.fadeIn,
+        ),
+      )
+    }
+  }
+
+  fun addTileOverlays(tileOverlays: List<TileOverlayDto>): List<TileOverlayDto> {
+    val result = mutableListOf<TileOverlayDto>()
+    tileOverlays.forEach {
+      val size = it.options.tileSize.toInt()
+      val options =
+        TileOverlayOptions()
+          .tileProvider(UrlTemplateTileProvider(size, size, it.options.urlTemplate))
+          .zIndex(it.options.zIndex.toFloat())
+          .transparency(it.options.transparency.toFloat())
+          .visible(it.options.visible)
+          .fadeIn(it.options.fadeIn)
+      val tileOverlay = getMap().addTileOverlay(options)
+      if (tileOverlay != null) {
+        val controller = TileOverlayController(tileOverlay, it.tileOverlayId)
+        controller.urlTemplate = it.options.urlTemplate
+        controller.tileSize = size
+        _tileOverlays.add(controller)
+        result.add(it)
+      }
+    }
+    return result
+  }
+
+  fun updateTileOverlays(tileOverlays: List<TileOverlayDto>): List<TileOverlayDto> {
+    val result = mutableListOf<TileOverlayDto>()
+    var error: Throwable? = null
+    tileOverlays.forEach {
+      findTileOverlayController(it.tileOverlayId)?.let { controller ->
+        // The URL template and tile size are fixed at creation by the maps SDK's tile provider;
+        // a layer that needs a new template is removed and added again.
+        controller.setZIndex(it.options.zIndex.toFloat())
+        controller.setTransparency(it.options.transparency.toFloat())
+        controller.setVisible(it.options.visible)
+        controller.setFadeIn(it.options.fadeIn)
+        result.add(it)
+      }
+        ?: run {
+          error =
+            FlutterError(
+              "tileOverlayNotFound",
+              "Failed to update tile overlay with id ${it.tileOverlayId}",
+            )
+        }
+    }
+    error?.let { throw it }
+    return result
+  }
+
+  fun removeTileOverlays(tileOverlays: List<TileOverlayDto>) {
+    var error: Throwable? = null
+    tileOverlays.forEach {
+      findTileOverlayController(it.tileOverlayId)?.let { controller ->
+        controller.remove()
+        _tileOverlays.remove(controller)
+      }
+        ?: run {
+          error =
+            FlutterError(
+              "tileOverlayNotFound",
+              "Failed to remove tile overlay with id ${it.tileOverlayId}",
+            )
+        }
+    }
+    error?.let { throw it }
+  }
+
+  fun clearTileOverlays() {
+    _tileOverlays.forEach { controller -> controller.remove() }
+    _tileOverlays.clear()
+  }
+
+  fun clearTileCache(tileOverlayId: String) {
+    findTileOverlayController(tileOverlayId)?.clearTileCache()
+      ?: throw FlutterError(
+        "tileOverlayNotFound",
+        "Failed to clear tile cache for tile overlay with id $tileOverlayId",
+      )
   }
 
   fun enableOnCameraChangedEvents() {

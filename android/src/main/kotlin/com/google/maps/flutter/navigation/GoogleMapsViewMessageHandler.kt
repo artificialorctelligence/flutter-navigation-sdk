@@ -562,6 +562,36 @@ class GoogleMapsViewMessageHandler(private val viewRegistry: GoogleMapsViewRegis
     getView(viewId.toInt()).clearCircles()
   }
 
+  override fun getTileOverlays(viewId: Long): List<TileOverlayDto> {
+    return getView(viewId.toInt()).getTileOverlays()
+  }
+
+  override fun addTileOverlays(
+    viewId: Long,
+    tileOverlays: List<TileOverlayDto>,
+  ): List<TileOverlayDto> {
+    return getView(viewId.toInt()).addTileOverlays(tileOverlays)
+  }
+
+  override fun updateTileOverlays(
+    viewId: Long,
+    tileOverlays: List<TileOverlayDto>,
+  ): List<TileOverlayDto> {
+    return getView(viewId.toInt()).updateTileOverlays(tileOverlays)
+  }
+
+  override fun removeTileOverlays(viewId: Long, tileOverlays: List<TileOverlayDto>) {
+    getView(viewId.toInt()).removeTileOverlays(tileOverlays)
+  }
+
+  override fun clearTileOverlays(viewId: Long) {
+    getView(viewId.toInt()).clearTileOverlays()
+  }
+
+  override fun clearTileCache(viewId: Long, tileOverlayId: String) {
+    getView(viewId.toInt()).clearTileCache(tileOverlayId)
+  }
+
   override fun enableOnCameraChangedEvents(viewId: Long) {
     getView(viewId.toInt()).enableOnCameraChangedEvents()
   }

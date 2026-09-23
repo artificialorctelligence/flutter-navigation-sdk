@@ -1626,6 +1626,90 @@ data class CircleOptionsDto(
   override fun hashCode(): Int = toList().hashCode()
 }
 
+/**
+ * A raster tile overlay drawn on top of the base map, fetched from a URL template.
+ *
+ * Weather radar, satellite imagery and similar layers are raster tiles; the map's vector primitives
+ * (polygon, polyline, marker, circle) cannot express them.
+ *
+ * Generated class from Pigeon that represents data sent in messages.
+ */
+data class TileOverlayDto(
+  /** Identifies the tile overlay. */
+  val tileOverlayId: String,
+  /** Options for the tile overlay. */
+  val options: TileOverlayOptionsDto,
+) {
+  companion object {
+    fun fromList(pigeonVar_list: List<Any?>): TileOverlayDto {
+      val tileOverlayId = pigeonVar_list[0] as String
+      val options = pigeonVar_list[1] as TileOverlayOptionsDto
+      return TileOverlayDto(tileOverlayId, options)
+    }
+  }
+
+  fun toList(): List<Any?> {
+    return listOf(tileOverlayId, options)
+  }
+
+  override fun equals(other: Any?): Boolean {
+    if (other !is TileOverlayDto) {
+      return false
+    }
+    if (this === other) {
+      return true
+    }
+    return MessagesPigeonUtils.deepEquals(toList(), other.toList())
+  }
+
+  override fun hashCode(): Int = toList().hashCode()
+}
+
+/** Generated class from Pigeon that represents data sent in messages. */
+data class TileOverlayOptionsDto(
+  /**
+   * URL with `{x}`, `{y}` and `{z}` placeholders, substituted per tile by the platform's own URL
+   * tile provider (`UrlTileProvider` on Android, `GMSURLTileLayer` on iOS), so tile bytes never
+   * cross the method channel.
+   */
+  val urlTemplate: String,
+  /** Edge length in points of each tile the template serves; usually 256 or 512. */
+  val tileSize: Long,
+  val zIndex: Double,
+  /** 0.0 fully opaque, 1.0 fully transparent. iOS takes the complement as its layer opacity. */
+  val transparency: Double,
+  val visible: Boolean,
+  val fadeIn: Boolean,
+) {
+  companion object {
+    fun fromList(pigeonVar_list: List<Any?>): TileOverlayOptionsDto {
+      val urlTemplate = pigeonVar_list[0] as String
+      val tileSize = pigeonVar_list[1] as Long
+      val zIndex = pigeonVar_list[2] as Double
+      val transparency = pigeonVar_list[3] as Double
+      val visible = pigeonVar_list[4] as Boolean
+      val fadeIn = pigeonVar_list[5] as Boolean
+      return TileOverlayOptionsDto(urlTemplate, tileSize, zIndex, transparency, visible, fadeIn)
+    }
+  }
+
+  fun toList(): List<Any?> {
+    return listOf(urlTemplate, tileSize, zIndex, transparency, visible, fadeIn)
+  }
+
+  override fun equals(other: Any?): Boolean {
+    if (other !is TileOverlayOptionsDto) {
+      return false
+    }
+    if (this === other) {
+      return true
+    }
+    return MessagesPigeonUtils.deepEquals(toList(), other.toList())
+  }
+
+  override fun hashCode(): Int = toList().hashCode()
+}
+
 /** Generated class from Pigeon that represents data sent in messages. */
 data class MapPaddingDto(val top: Long, val left: Long, val bottom: Long, val right: Long) {
   companion object {
@@ -2955,103 +3039,109 @@ private open class messagesPigeonCodec : StandardMessageCodec() {
         return (readValue(buffer) as? List<Any?>)?.let { CircleOptionsDto.fromList(it) }
       }
       178.toByte() -> {
-        return (readValue(buffer) as? List<Any?>)?.let { MapPaddingDto.fromList(it) }
+        return (readValue(buffer) as? List<Any?>)?.let { TileOverlayDto.fromList(it) }
       }
       179.toByte() -> {
+        return (readValue(buffer) as? List<Any?>)?.let { TileOverlayOptionsDto.fromList(it) }
+      }
+      180.toByte() -> {
+        return (readValue(buffer) as? List<Any?>)?.let { MapPaddingDto.fromList(it) }
+      }
+      181.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
           NavigationHeaderStylingOptionsDto.fromList(it)
         }
       }
-      180.toByte() -> {
+      182.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let { RouteTokenOptionsDto.fromList(it) }
       }
-      181.toByte() -> {
+      183.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let { DestinationsDto.fromList(it) }
       }
-      182.toByte() -> {
+      184.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let { RoutingOptionsDto.fromList(it) }
       }
-      183.toByte() -> {
+      185.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let { NavigationDisplayOptionsDto.fromList(it) }
       }
-      184.toByte() -> {
+      186.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let { NavigationWaypointDto.fromList(it) }
       }
-      185.toByte() -> {
+      187.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
           ContinueToNextDestinationResponseDto.fromList(it)
         }
       }
-      186.toByte() -> {
+      188.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let { NavigationTimeAndDistanceDto.fromList(it) }
       }
-      187.toByte() -> {
+      189.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
           NavigationAudioGuidanceSettingsDto.fromList(it)
         }
       }
-      188.toByte() -> {
+      190.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let { SimulationOptionsDto.fromList(it) }
       }
-      189.toByte() -> {
+      191.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let { LatLngDto.fromList(it) }
       }
-      190.toByte() -> {
+      192.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let { LatLngBoundsDto.fromList(it) }
       }
-      191.toByte() -> {
+      193.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let { ScreenCoordinateDto.fromList(it) }
       }
-      192.toByte() -> {
+      194.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let { SpeedingUpdatedEventDto.fromList(it) }
       }
-      193.toByte() -> {
+      195.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
           GpsAvailabilityChangeEventDto.fromList(it)
         }
       }
-      194.toByte() -> {
+      196.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
           SpeedAlertOptionsThresholdPercentageDto.fromList(it)
         }
       }
-      195.toByte() -> {
+      197.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let { SpeedAlertOptionsDto.fromList(it) }
       }
-      196.toByte() -> {
+      198.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
           RouteSegmentTrafficDataRoadStretchRenderingDataDto.fromList(it)
         }
       }
-      197.toByte() -> {
+      199.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let { RouteSegmentTrafficDataDto.fromList(it) }
       }
-      198.toByte() -> {
+      200.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let { RouteSegmentDto.fromList(it) }
       }
-      199.toByte() -> {
+      201.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let { LaneDirectionDto.fromList(it) }
       }
-      200.toByte() -> {
+      202.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let { LaneDto.fromList(it) }
       }
-      201.toByte() -> {
+      203.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let { StepInfoDto.fromList(it) }
       }
-      202.toByte() -> {
+      204.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let { NavInfoDto.fromList(it) }
       }
-      203.toByte() -> {
+      205.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
           TermsAndConditionsUIParamsDto.fromList(it)
         }
       }
-      204.toByte() -> {
+      206.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
           NavigationNotificationOptionsDto.fromList(it)
         }
       }
-      205.toByte() -> {
+      207.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
           StepImageGenerationOptionsDto.fromList(it)
         }
@@ -3258,116 +3348,124 @@ private open class messagesPigeonCodec : StandardMessageCodec() {
         stream.write(177)
         writeValue(stream, value.toList())
       }
-      is MapPaddingDto -> {
+      is TileOverlayDto -> {
         stream.write(178)
         writeValue(stream, value.toList())
       }
-      is NavigationHeaderStylingOptionsDto -> {
+      is TileOverlayOptionsDto -> {
         stream.write(179)
         writeValue(stream, value.toList())
       }
-      is RouteTokenOptionsDto -> {
+      is MapPaddingDto -> {
         stream.write(180)
         writeValue(stream, value.toList())
       }
-      is DestinationsDto -> {
+      is NavigationHeaderStylingOptionsDto -> {
         stream.write(181)
         writeValue(stream, value.toList())
       }
-      is RoutingOptionsDto -> {
+      is RouteTokenOptionsDto -> {
         stream.write(182)
         writeValue(stream, value.toList())
       }
-      is NavigationDisplayOptionsDto -> {
+      is DestinationsDto -> {
         stream.write(183)
         writeValue(stream, value.toList())
       }
-      is NavigationWaypointDto -> {
+      is RoutingOptionsDto -> {
         stream.write(184)
         writeValue(stream, value.toList())
       }
-      is ContinueToNextDestinationResponseDto -> {
+      is NavigationDisplayOptionsDto -> {
         stream.write(185)
         writeValue(stream, value.toList())
       }
-      is NavigationTimeAndDistanceDto -> {
+      is NavigationWaypointDto -> {
         stream.write(186)
         writeValue(stream, value.toList())
       }
-      is NavigationAudioGuidanceSettingsDto -> {
+      is ContinueToNextDestinationResponseDto -> {
         stream.write(187)
         writeValue(stream, value.toList())
       }
-      is SimulationOptionsDto -> {
+      is NavigationTimeAndDistanceDto -> {
         stream.write(188)
         writeValue(stream, value.toList())
       }
-      is LatLngDto -> {
+      is NavigationAudioGuidanceSettingsDto -> {
         stream.write(189)
         writeValue(stream, value.toList())
       }
-      is LatLngBoundsDto -> {
+      is SimulationOptionsDto -> {
         stream.write(190)
         writeValue(stream, value.toList())
       }
-      is ScreenCoordinateDto -> {
+      is LatLngDto -> {
         stream.write(191)
         writeValue(stream, value.toList())
       }
-      is SpeedingUpdatedEventDto -> {
+      is LatLngBoundsDto -> {
         stream.write(192)
         writeValue(stream, value.toList())
       }
-      is GpsAvailabilityChangeEventDto -> {
+      is ScreenCoordinateDto -> {
         stream.write(193)
         writeValue(stream, value.toList())
       }
-      is SpeedAlertOptionsThresholdPercentageDto -> {
+      is SpeedingUpdatedEventDto -> {
         stream.write(194)
         writeValue(stream, value.toList())
       }
-      is SpeedAlertOptionsDto -> {
+      is GpsAvailabilityChangeEventDto -> {
         stream.write(195)
         writeValue(stream, value.toList())
       }
-      is RouteSegmentTrafficDataRoadStretchRenderingDataDto -> {
+      is SpeedAlertOptionsThresholdPercentageDto -> {
         stream.write(196)
         writeValue(stream, value.toList())
       }
-      is RouteSegmentTrafficDataDto -> {
+      is SpeedAlertOptionsDto -> {
         stream.write(197)
         writeValue(stream, value.toList())
       }
-      is RouteSegmentDto -> {
+      is RouteSegmentTrafficDataRoadStretchRenderingDataDto -> {
         stream.write(198)
         writeValue(stream, value.toList())
       }
-      is LaneDirectionDto -> {
+      is RouteSegmentTrafficDataDto -> {
         stream.write(199)
         writeValue(stream, value.toList())
       }
-      is LaneDto -> {
+      is RouteSegmentDto -> {
         stream.write(200)
         writeValue(stream, value.toList())
       }
-      is StepInfoDto -> {
+      is LaneDirectionDto -> {
         stream.write(201)
         writeValue(stream, value.toList())
       }
-      is NavInfoDto -> {
+      is LaneDto -> {
         stream.write(202)
         writeValue(stream, value.toList())
       }
-      is TermsAndConditionsUIParamsDto -> {
+      is StepInfoDto -> {
         stream.write(203)
         writeValue(stream, value.toList())
       }
-      is NavigationNotificationOptionsDto -> {
+      is NavInfoDto -> {
         stream.write(204)
         writeValue(stream, value.toList())
       }
-      is StepImageGenerationOptionsDto -> {
+      is TermsAndConditionsUIParamsDto -> {
         stream.write(205)
+        writeValue(stream, value.toList())
+      }
+      is NavigationNotificationOptionsDto -> {
+        stream.write(206)
+        writeValue(stream, value.toList())
+      }
+      is StepImageGenerationOptionsDto -> {
+        stream.write(207)
         writeValue(stream, value.toList())
       }
       else -> super.writeValue(stream, value)
@@ -3692,6 +3790,22 @@ interface MapViewApi {
   fun removeCircles(viewId: Long, circles: List<CircleDto>)
 
   fun clearCircles(viewId: Long)
+
+  fun getTileOverlays(viewId: Long): List<TileOverlayDto>
+
+  fun addTileOverlays(viewId: Long, tileOverlays: List<TileOverlayDto>): List<TileOverlayDto>
+
+  fun updateTileOverlays(viewId: Long, tileOverlays: List<TileOverlayDto>): List<TileOverlayDto>
+
+  fun removeTileOverlays(viewId: Long, tileOverlays: List<TileOverlayDto>)
+
+  fun clearTileOverlays(viewId: Long)
+
+  /**
+   * Drops cached tiles for one overlay, so a layer whose tiles change over time (radar frames, for
+   * example) can be refreshed without being removed and added again.
+   */
+  fun clearTileCache(viewId: Long, tileOverlayId: String)
 
   fun enableOnCameraChangedEvents(viewId: Long)
 
@@ -6334,6 +6448,151 @@ interface MapViewApi {
         val channel =
           BasicMessageChannel<Any?>(
             binaryMessenger,
+            "dev.flutter.pigeon.google_navigation_flutter.MapViewApi.getTileOverlays$separatedMessageChannelSuffix",
+            codec,
+          )
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val viewIdArg = args[0] as Long
+            val wrapped: List<Any?> =
+              try {
+                listOf(api.getTileOverlays(viewIdArg))
+              } catch (exception: Throwable) {
+                MessagesPigeonUtils.wrapError(exception)
+              }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel =
+          BasicMessageChannel<Any?>(
+            binaryMessenger,
+            "dev.flutter.pigeon.google_navigation_flutter.MapViewApi.addTileOverlays$separatedMessageChannelSuffix",
+            codec,
+          )
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val viewIdArg = args[0] as Long
+            val tileOverlaysArg = args[1] as List<TileOverlayDto>
+            val wrapped: List<Any?> =
+              try {
+                listOf(api.addTileOverlays(viewIdArg, tileOverlaysArg))
+              } catch (exception: Throwable) {
+                MessagesPigeonUtils.wrapError(exception)
+              }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel =
+          BasicMessageChannel<Any?>(
+            binaryMessenger,
+            "dev.flutter.pigeon.google_navigation_flutter.MapViewApi.updateTileOverlays$separatedMessageChannelSuffix",
+            codec,
+          )
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val viewIdArg = args[0] as Long
+            val tileOverlaysArg = args[1] as List<TileOverlayDto>
+            val wrapped: List<Any?> =
+              try {
+                listOf(api.updateTileOverlays(viewIdArg, tileOverlaysArg))
+              } catch (exception: Throwable) {
+                MessagesPigeonUtils.wrapError(exception)
+              }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel =
+          BasicMessageChannel<Any?>(
+            binaryMessenger,
+            "dev.flutter.pigeon.google_navigation_flutter.MapViewApi.removeTileOverlays$separatedMessageChannelSuffix",
+            codec,
+          )
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val viewIdArg = args[0] as Long
+            val tileOverlaysArg = args[1] as List<TileOverlayDto>
+            val wrapped: List<Any?> =
+              try {
+                api.removeTileOverlays(viewIdArg, tileOverlaysArg)
+                listOf(null)
+              } catch (exception: Throwable) {
+                MessagesPigeonUtils.wrapError(exception)
+              }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel =
+          BasicMessageChannel<Any?>(
+            binaryMessenger,
+            "dev.flutter.pigeon.google_navigation_flutter.MapViewApi.clearTileOverlays$separatedMessageChannelSuffix",
+            codec,
+          )
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val viewIdArg = args[0] as Long
+            val wrapped: List<Any?> =
+              try {
+                api.clearTileOverlays(viewIdArg)
+                listOf(null)
+              } catch (exception: Throwable) {
+                MessagesPigeonUtils.wrapError(exception)
+              }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel =
+          BasicMessageChannel<Any?>(
+            binaryMessenger,
+            "dev.flutter.pigeon.google_navigation_flutter.MapViewApi.clearTileCache$separatedMessageChannelSuffix",
+            codec,
+          )
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val viewIdArg = args[0] as Long
+            val tileOverlayIdArg = args[1] as String
+            val wrapped: List<Any?> =
+              try {
+                api.clearTileCache(viewIdArg, tileOverlayIdArg)
+                listOf(null)
+              } catch (exception: Throwable) {
+                MessagesPigeonUtils.wrapError(exception)
+              }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel =
+          BasicMessageChannel<Any?>(
+            binaryMessenger,
             "dev.flutter.pigeon.google_navigation_flutter.MapViewApi.enableOnCameraChangedEvents$separatedMessageChannelSuffix",
             codec,
           )
@@ -8403,6 +8662,18 @@ interface AutoMapViewApi {
   fun removeCircles(circles: List<CircleDto>)
 
   fun clearCircles()
+
+  fun getTileOverlays(): List<TileOverlayDto>
+
+  fun addTileOverlays(tileOverlays: List<TileOverlayDto>): List<TileOverlayDto>
+
+  fun updateTileOverlays(tileOverlays: List<TileOverlayDto>): List<TileOverlayDto>
+
+  fun removeTileOverlays(tileOverlays: List<TileOverlayDto>)
+
+  fun clearTileOverlays()
+
+  fun clearTileCache(tileOverlayId: String)
 
   fun enableOnCameraChangedEvents()
 
@@ -10525,6 +10796,143 @@ interface AutoMapViewApi {
             val wrapped: List<Any?> =
               try {
                 api.clearCircles()
+                listOf(null)
+              } catch (exception: Throwable) {
+                MessagesPigeonUtils.wrapError(exception)
+              }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel =
+          BasicMessageChannel<Any?>(
+            binaryMessenger,
+            "dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.getTileOverlays$separatedMessageChannelSuffix",
+            codec,
+          )
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            val wrapped: List<Any?> =
+              try {
+                listOf(api.getTileOverlays())
+              } catch (exception: Throwable) {
+                MessagesPigeonUtils.wrapError(exception)
+              }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel =
+          BasicMessageChannel<Any?>(
+            binaryMessenger,
+            "dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.addTileOverlays$separatedMessageChannelSuffix",
+            codec,
+          )
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val tileOverlaysArg = args[0] as List<TileOverlayDto>
+            val wrapped: List<Any?> =
+              try {
+                listOf(api.addTileOverlays(tileOverlaysArg))
+              } catch (exception: Throwable) {
+                MessagesPigeonUtils.wrapError(exception)
+              }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel =
+          BasicMessageChannel<Any?>(
+            binaryMessenger,
+            "dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.updateTileOverlays$separatedMessageChannelSuffix",
+            codec,
+          )
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val tileOverlaysArg = args[0] as List<TileOverlayDto>
+            val wrapped: List<Any?> =
+              try {
+                listOf(api.updateTileOverlays(tileOverlaysArg))
+              } catch (exception: Throwable) {
+                MessagesPigeonUtils.wrapError(exception)
+              }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel =
+          BasicMessageChannel<Any?>(
+            binaryMessenger,
+            "dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.removeTileOverlays$separatedMessageChannelSuffix",
+            codec,
+          )
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val tileOverlaysArg = args[0] as List<TileOverlayDto>
+            val wrapped: List<Any?> =
+              try {
+                api.removeTileOverlays(tileOverlaysArg)
+                listOf(null)
+              } catch (exception: Throwable) {
+                MessagesPigeonUtils.wrapError(exception)
+              }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel =
+          BasicMessageChannel<Any?>(
+            binaryMessenger,
+            "dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.clearTileOverlays$separatedMessageChannelSuffix",
+            codec,
+          )
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            val wrapped: List<Any?> =
+              try {
+                api.clearTileOverlays()
+                listOf(null)
+              } catch (exception: Throwable) {
+                MessagesPigeonUtils.wrapError(exception)
+              }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel =
+          BasicMessageChannel<Any?>(
+            binaryMessenger,
+            "dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.clearTileCache$separatedMessageChannelSuffix",
+            codec,
+          )
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val tileOverlayIdArg = args[0] as String
+            val wrapped: List<Any?> =
+              try {
+                api.clearTileCache(tileOverlayIdArg)
                 listOf(null)
               } catch (exception: Throwable) {
                 MessagesPigeonUtils.wrapError(exception)

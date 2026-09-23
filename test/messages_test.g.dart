@@ -179,89 +179,95 @@ class _PigeonCodec extends StandardMessageCodec {
     } else if (value is CircleOptionsDto) {
       buffer.putUint8(177);
       writeValue(buffer, value.encode());
-    } else if (value is MapPaddingDto) {
+    } else if (value is TileOverlayDto) {
       buffer.putUint8(178);
       writeValue(buffer, value.encode());
-    } else if (value is NavigationHeaderStylingOptionsDto) {
+    } else if (value is TileOverlayOptionsDto) {
       buffer.putUint8(179);
       writeValue(buffer, value.encode());
-    } else if (value is RouteTokenOptionsDto) {
+    } else if (value is MapPaddingDto) {
       buffer.putUint8(180);
       writeValue(buffer, value.encode());
-    } else if (value is DestinationsDto) {
+    } else if (value is NavigationHeaderStylingOptionsDto) {
       buffer.putUint8(181);
       writeValue(buffer, value.encode());
-    } else if (value is RoutingOptionsDto) {
+    } else if (value is RouteTokenOptionsDto) {
       buffer.putUint8(182);
       writeValue(buffer, value.encode());
-    } else if (value is NavigationDisplayOptionsDto) {
+    } else if (value is DestinationsDto) {
       buffer.putUint8(183);
       writeValue(buffer, value.encode());
-    } else if (value is NavigationWaypointDto) {
+    } else if (value is RoutingOptionsDto) {
       buffer.putUint8(184);
       writeValue(buffer, value.encode());
-    } else if (value is ContinueToNextDestinationResponseDto) {
+    } else if (value is NavigationDisplayOptionsDto) {
       buffer.putUint8(185);
       writeValue(buffer, value.encode());
-    } else if (value is NavigationTimeAndDistanceDto) {
+    } else if (value is NavigationWaypointDto) {
       buffer.putUint8(186);
       writeValue(buffer, value.encode());
-    } else if (value is NavigationAudioGuidanceSettingsDto) {
+    } else if (value is ContinueToNextDestinationResponseDto) {
       buffer.putUint8(187);
       writeValue(buffer, value.encode());
-    } else if (value is SimulationOptionsDto) {
+    } else if (value is NavigationTimeAndDistanceDto) {
       buffer.putUint8(188);
       writeValue(buffer, value.encode());
-    } else if (value is LatLngDto) {
+    } else if (value is NavigationAudioGuidanceSettingsDto) {
       buffer.putUint8(189);
       writeValue(buffer, value.encode());
-    } else if (value is LatLngBoundsDto) {
+    } else if (value is SimulationOptionsDto) {
       buffer.putUint8(190);
       writeValue(buffer, value.encode());
-    } else if (value is ScreenCoordinateDto) {
+    } else if (value is LatLngDto) {
       buffer.putUint8(191);
       writeValue(buffer, value.encode());
-    } else if (value is SpeedingUpdatedEventDto) {
+    } else if (value is LatLngBoundsDto) {
       buffer.putUint8(192);
       writeValue(buffer, value.encode());
-    } else if (value is GpsAvailabilityChangeEventDto) {
+    } else if (value is ScreenCoordinateDto) {
       buffer.putUint8(193);
       writeValue(buffer, value.encode());
-    } else if (value is SpeedAlertOptionsThresholdPercentageDto) {
+    } else if (value is SpeedingUpdatedEventDto) {
       buffer.putUint8(194);
       writeValue(buffer, value.encode());
-    } else if (value is SpeedAlertOptionsDto) {
+    } else if (value is GpsAvailabilityChangeEventDto) {
       buffer.putUint8(195);
       writeValue(buffer, value.encode());
-    } else if (value is RouteSegmentTrafficDataRoadStretchRenderingDataDto) {
+    } else if (value is SpeedAlertOptionsThresholdPercentageDto) {
       buffer.putUint8(196);
       writeValue(buffer, value.encode());
-    } else if (value is RouteSegmentTrafficDataDto) {
+    } else if (value is SpeedAlertOptionsDto) {
       buffer.putUint8(197);
       writeValue(buffer, value.encode());
-    } else if (value is RouteSegmentDto) {
+    } else if (value is RouteSegmentTrafficDataRoadStretchRenderingDataDto) {
       buffer.putUint8(198);
       writeValue(buffer, value.encode());
-    } else if (value is LaneDirectionDto) {
+    } else if (value is RouteSegmentTrafficDataDto) {
       buffer.putUint8(199);
       writeValue(buffer, value.encode());
-    } else if (value is LaneDto) {
+    } else if (value is RouteSegmentDto) {
       buffer.putUint8(200);
       writeValue(buffer, value.encode());
-    } else if (value is StepInfoDto) {
+    } else if (value is LaneDirectionDto) {
       buffer.putUint8(201);
       writeValue(buffer, value.encode());
-    } else if (value is NavInfoDto) {
+    } else if (value is LaneDto) {
       buffer.putUint8(202);
       writeValue(buffer, value.encode());
-    } else if (value is TermsAndConditionsUIParamsDto) {
+    } else if (value is StepInfoDto) {
       buffer.putUint8(203);
       writeValue(buffer, value.encode());
-    } else if (value is NavigationNotificationOptionsDto) {
+    } else if (value is NavInfoDto) {
       buffer.putUint8(204);
       writeValue(buffer, value.encode());
-    } else if (value is StepImageGenerationOptionsDto) {
+    } else if (value is TermsAndConditionsUIParamsDto) {
       buffer.putUint8(205);
+      writeValue(buffer, value.encode());
+    } else if (value is NavigationNotificationOptionsDto) {
+      buffer.putUint8(206);
+      writeValue(buffer, value.encode());
+    } else if (value is StepImageGenerationOptionsDto) {
+      buffer.putUint8(207);
       writeValue(buffer, value.encode());
     } else {
       super.writeValue(buffer, value);
@@ -403,64 +409,68 @@ class _PigeonCodec extends StandardMessageCodec {
       case 177:
         return CircleOptionsDto.decode(readValue(buffer)!);
       case 178:
-        return MapPaddingDto.decode(readValue(buffer)!);
+        return TileOverlayDto.decode(readValue(buffer)!);
       case 179:
-        return NavigationHeaderStylingOptionsDto.decode(readValue(buffer)!);
+        return TileOverlayOptionsDto.decode(readValue(buffer)!);
       case 180:
-        return RouteTokenOptionsDto.decode(readValue(buffer)!);
+        return MapPaddingDto.decode(readValue(buffer)!);
       case 181:
-        return DestinationsDto.decode(readValue(buffer)!);
+        return NavigationHeaderStylingOptionsDto.decode(readValue(buffer)!);
       case 182:
-        return RoutingOptionsDto.decode(readValue(buffer)!);
+        return RouteTokenOptionsDto.decode(readValue(buffer)!);
       case 183:
-        return NavigationDisplayOptionsDto.decode(readValue(buffer)!);
+        return DestinationsDto.decode(readValue(buffer)!);
       case 184:
-        return NavigationWaypointDto.decode(readValue(buffer)!);
+        return RoutingOptionsDto.decode(readValue(buffer)!);
       case 185:
-        return ContinueToNextDestinationResponseDto.decode(readValue(buffer)!);
+        return NavigationDisplayOptionsDto.decode(readValue(buffer)!);
       case 186:
-        return NavigationTimeAndDistanceDto.decode(readValue(buffer)!);
+        return NavigationWaypointDto.decode(readValue(buffer)!);
       case 187:
-        return NavigationAudioGuidanceSettingsDto.decode(readValue(buffer)!);
+        return ContinueToNextDestinationResponseDto.decode(readValue(buffer)!);
       case 188:
-        return SimulationOptionsDto.decode(readValue(buffer)!);
+        return NavigationTimeAndDistanceDto.decode(readValue(buffer)!);
       case 189:
-        return LatLngDto.decode(readValue(buffer)!);
+        return NavigationAudioGuidanceSettingsDto.decode(readValue(buffer)!);
       case 190:
-        return LatLngBoundsDto.decode(readValue(buffer)!);
+        return SimulationOptionsDto.decode(readValue(buffer)!);
       case 191:
-        return ScreenCoordinateDto.decode(readValue(buffer)!);
+        return LatLngDto.decode(readValue(buffer)!);
       case 192:
-        return SpeedingUpdatedEventDto.decode(readValue(buffer)!);
+        return LatLngBoundsDto.decode(readValue(buffer)!);
       case 193:
-        return GpsAvailabilityChangeEventDto.decode(readValue(buffer)!);
+        return ScreenCoordinateDto.decode(readValue(buffer)!);
       case 194:
+        return SpeedingUpdatedEventDto.decode(readValue(buffer)!);
+      case 195:
+        return GpsAvailabilityChangeEventDto.decode(readValue(buffer)!);
+      case 196:
         return SpeedAlertOptionsThresholdPercentageDto.decode(
           readValue(buffer)!,
         );
-      case 195:
+      case 197:
         return SpeedAlertOptionsDto.decode(readValue(buffer)!);
-      case 196:
+      case 198:
         return RouteSegmentTrafficDataRoadStretchRenderingDataDto.decode(
           readValue(buffer)!,
         );
-      case 197:
-        return RouteSegmentTrafficDataDto.decode(readValue(buffer)!);
-      case 198:
-        return RouteSegmentDto.decode(readValue(buffer)!);
       case 199:
-        return LaneDirectionDto.decode(readValue(buffer)!);
+        return RouteSegmentTrafficDataDto.decode(readValue(buffer)!);
       case 200:
-        return LaneDto.decode(readValue(buffer)!);
+        return RouteSegmentDto.decode(readValue(buffer)!);
       case 201:
-        return StepInfoDto.decode(readValue(buffer)!);
+        return LaneDirectionDto.decode(readValue(buffer)!);
       case 202:
-        return NavInfoDto.decode(readValue(buffer)!);
+        return LaneDto.decode(readValue(buffer)!);
       case 203:
-        return TermsAndConditionsUIParamsDto.decode(readValue(buffer)!);
+        return StepInfoDto.decode(readValue(buffer)!);
       case 204:
-        return NavigationNotificationOptionsDto.decode(readValue(buffer)!);
+        return NavInfoDto.decode(readValue(buffer)!);
       case 205:
+        return TermsAndConditionsUIParamsDto.decode(readValue(buffer)!);
+      case 206:
+        return NavigationNotificationOptionsDto.decode(readValue(buffer)!);
+      case 207:
         return StepImageGenerationOptionsDto.decode(readValue(buffer)!);
       default:
         return super.readValueOfType(type, buffer);
@@ -736,6 +746,26 @@ abstract class TestMapViewApi {
   void removeCircles(int viewId, List<CircleDto> circles);
 
   void clearCircles(int viewId);
+
+  List<TileOverlayDto> getTileOverlays(int viewId);
+
+  List<TileOverlayDto> addTileOverlays(
+    int viewId,
+    List<TileOverlayDto> tileOverlays,
+  );
+
+  List<TileOverlayDto> updateTileOverlays(
+    int viewId,
+    List<TileOverlayDto> tileOverlays,
+  );
+
+  void removeTileOverlays(int viewId, List<TileOverlayDto> tileOverlays);
+
+  void clearTileOverlays(int viewId);
+
+  /// Drops cached tiles for one overlay, so a layer whose tiles change over time (radar frames,
+  /// for example) can be refreshed without being removed and added again.
+  void clearTileCache(int viewId, String tileOverlayId);
 
   void enableOnCameraChangedEvents(int viewId);
 
@@ -5373,6 +5403,267 @@ abstract class TestMapViewApi {
     {
       final BasicMessageChannel<Object?>
       pigeonVar_channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.google_navigation_flutter.MapViewApi.getTileOverlays$messageChannelSuffix',
+        pigeonChannelCodec,
+        binaryMessenger: binaryMessenger,
+      );
+      if (api == null) {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, null);
+      } else {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, (
+              Object? message,
+            ) async {
+              assert(
+                message != null,
+                'Argument for dev.flutter.pigeon.google_navigation_flutter.MapViewApi.getTileOverlays was null.',
+              );
+              final List<Object?> args = (message as List<Object?>?)!;
+              final int? arg_viewId = (args[0] as int?);
+              assert(
+                arg_viewId != null,
+                'Argument for dev.flutter.pigeon.google_navigation_flutter.MapViewApi.getTileOverlays was null, expected non-null int.',
+              );
+              try {
+                final List<TileOverlayDto> output = api.getTileOverlays(
+                  arg_viewId!,
+                );
+                return <Object?>[output];
+              } on PlatformException catch (e) {
+                return wrapResponse(error: e);
+              } catch (e) {
+                return wrapResponse(
+                  error: PlatformException(
+                    code: 'error',
+                    message: e.toString(),
+                  ),
+                );
+              }
+            });
+      }
+    }
+    {
+      final BasicMessageChannel<Object?>
+      pigeonVar_channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.google_navigation_flutter.MapViewApi.addTileOverlays$messageChannelSuffix',
+        pigeonChannelCodec,
+        binaryMessenger: binaryMessenger,
+      );
+      if (api == null) {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, null);
+      } else {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger.setMockDecodedMessageHandler<
+          Object?
+        >(pigeonVar_channel, (Object? message) async {
+          assert(
+            message != null,
+            'Argument for dev.flutter.pigeon.google_navigation_flutter.MapViewApi.addTileOverlays was null.',
+          );
+          final List<Object?> args = (message as List<Object?>?)!;
+          final int? arg_viewId = (args[0] as int?);
+          assert(
+            arg_viewId != null,
+            'Argument for dev.flutter.pigeon.google_navigation_flutter.MapViewApi.addTileOverlays was null, expected non-null int.',
+          );
+          final List<TileOverlayDto>? arg_tileOverlays =
+              (args[1] as List<Object?>?)?.cast<TileOverlayDto>();
+          assert(
+            arg_tileOverlays != null,
+            'Argument for dev.flutter.pigeon.google_navigation_flutter.MapViewApi.addTileOverlays was null, expected non-null List<TileOverlayDto>.',
+          );
+          try {
+            final List<TileOverlayDto> output = api.addTileOverlays(
+              arg_viewId!,
+              arg_tileOverlays!,
+            );
+            return <Object?>[output];
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+              error: PlatformException(code: 'error', message: e.toString()),
+            );
+          }
+        });
+      }
+    }
+    {
+      final BasicMessageChannel<Object?>
+      pigeonVar_channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.google_navigation_flutter.MapViewApi.updateTileOverlays$messageChannelSuffix',
+        pigeonChannelCodec,
+        binaryMessenger: binaryMessenger,
+      );
+      if (api == null) {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, null);
+      } else {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger.setMockDecodedMessageHandler<
+          Object?
+        >(pigeonVar_channel, (Object? message) async {
+          assert(
+            message != null,
+            'Argument for dev.flutter.pigeon.google_navigation_flutter.MapViewApi.updateTileOverlays was null.',
+          );
+          final List<Object?> args = (message as List<Object?>?)!;
+          final int? arg_viewId = (args[0] as int?);
+          assert(
+            arg_viewId != null,
+            'Argument for dev.flutter.pigeon.google_navigation_flutter.MapViewApi.updateTileOverlays was null, expected non-null int.',
+          );
+          final List<TileOverlayDto>? arg_tileOverlays =
+              (args[1] as List<Object?>?)?.cast<TileOverlayDto>();
+          assert(
+            arg_tileOverlays != null,
+            'Argument for dev.flutter.pigeon.google_navigation_flutter.MapViewApi.updateTileOverlays was null, expected non-null List<TileOverlayDto>.',
+          );
+          try {
+            final List<TileOverlayDto> output = api.updateTileOverlays(
+              arg_viewId!,
+              arg_tileOverlays!,
+            );
+            return <Object?>[output];
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+              error: PlatformException(code: 'error', message: e.toString()),
+            );
+          }
+        });
+      }
+    }
+    {
+      final BasicMessageChannel<Object?>
+      pigeonVar_channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.google_navigation_flutter.MapViewApi.removeTileOverlays$messageChannelSuffix',
+        pigeonChannelCodec,
+        binaryMessenger: binaryMessenger,
+      );
+      if (api == null) {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, null);
+      } else {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger.setMockDecodedMessageHandler<
+          Object?
+        >(pigeonVar_channel, (Object? message) async {
+          assert(
+            message != null,
+            'Argument for dev.flutter.pigeon.google_navigation_flutter.MapViewApi.removeTileOverlays was null.',
+          );
+          final List<Object?> args = (message as List<Object?>?)!;
+          final int? arg_viewId = (args[0] as int?);
+          assert(
+            arg_viewId != null,
+            'Argument for dev.flutter.pigeon.google_navigation_flutter.MapViewApi.removeTileOverlays was null, expected non-null int.',
+          );
+          final List<TileOverlayDto>? arg_tileOverlays =
+              (args[1] as List<Object?>?)?.cast<TileOverlayDto>();
+          assert(
+            arg_tileOverlays != null,
+            'Argument for dev.flutter.pigeon.google_navigation_flutter.MapViewApi.removeTileOverlays was null, expected non-null List<TileOverlayDto>.',
+          );
+          try {
+            api.removeTileOverlays(arg_viewId!, arg_tileOverlays!);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+              error: PlatformException(code: 'error', message: e.toString()),
+            );
+          }
+        });
+      }
+    }
+    {
+      final BasicMessageChannel<Object?>
+      pigeonVar_channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.google_navigation_flutter.MapViewApi.clearTileOverlays$messageChannelSuffix',
+        pigeonChannelCodec,
+        binaryMessenger: binaryMessenger,
+      );
+      if (api == null) {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, null);
+      } else {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, (
+              Object? message,
+            ) async {
+              assert(
+                message != null,
+                'Argument for dev.flutter.pigeon.google_navigation_flutter.MapViewApi.clearTileOverlays was null.',
+              );
+              final List<Object?> args = (message as List<Object?>?)!;
+              final int? arg_viewId = (args[0] as int?);
+              assert(
+                arg_viewId != null,
+                'Argument for dev.flutter.pigeon.google_navigation_flutter.MapViewApi.clearTileOverlays was null, expected non-null int.',
+              );
+              try {
+                api.clearTileOverlays(arg_viewId!);
+                return wrapResponse(empty: true);
+              } on PlatformException catch (e) {
+                return wrapResponse(error: e);
+              } catch (e) {
+                return wrapResponse(
+                  error: PlatformException(
+                    code: 'error',
+                    message: e.toString(),
+                  ),
+                );
+              }
+            });
+      }
+    }
+    {
+      final BasicMessageChannel<Object?>
+      pigeonVar_channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.google_navigation_flutter.MapViewApi.clearTileCache$messageChannelSuffix',
+        pigeonChannelCodec,
+        binaryMessenger: binaryMessenger,
+      );
+      if (api == null) {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, null);
+      } else {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger.setMockDecodedMessageHandler<
+          Object?
+        >(pigeonVar_channel, (Object? message) async {
+          assert(
+            message != null,
+            'Argument for dev.flutter.pigeon.google_navigation_flutter.MapViewApi.clearTileCache was null.',
+          );
+          final List<Object?> args = (message as List<Object?>?)!;
+          final int? arg_viewId = (args[0] as int?);
+          assert(
+            arg_viewId != null,
+            'Argument for dev.flutter.pigeon.google_navigation_flutter.MapViewApi.clearTileCache was null, expected non-null int.',
+          );
+          final String? arg_tileOverlayId = (args[1] as String?);
+          assert(
+            arg_tileOverlayId != null,
+            'Argument for dev.flutter.pigeon.google_navigation_flutter.MapViewApi.clearTileCache was null, expected non-null String.',
+          );
+          try {
+            api.clearTileCache(arg_viewId!, arg_tileOverlayId!);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+              error: PlatformException(code: 'error', message: e.toString()),
+            );
+          }
+        });
+      }
+    }
+    {
+      final BasicMessageChannel<Object?>
+      pigeonVar_channel = BasicMessageChannel<Object?>(
         'dev.flutter.pigeon.google_navigation_flutter.MapViewApi.enableOnCameraChangedEvents$messageChannelSuffix',
         pigeonChannelCodec,
         binaryMessenger: binaryMessenger,
@@ -7487,6 +7778,18 @@ abstract class TestAutoMapViewApi {
   void removeCircles(List<CircleDto> circles);
 
   void clearCircles();
+
+  List<TileOverlayDto> getTileOverlays();
+
+  List<TileOverlayDto> addTileOverlays(List<TileOverlayDto> tileOverlays);
+
+  List<TileOverlayDto> updateTileOverlays(List<TileOverlayDto> tileOverlays);
+
+  void removeTileOverlays(List<TileOverlayDto> tileOverlays);
+
+  void clearTileOverlays();
+
+  void clearTileCache(String tileOverlayId);
 
   void enableOnCameraChangedEvents();
 
@@ -10933,6 +11236,239 @@ abstract class TestAutoMapViewApi {
             ) async {
               try {
                 api.clearCircles();
+                return wrapResponse(empty: true);
+              } on PlatformException catch (e) {
+                return wrapResponse(error: e);
+              } catch (e) {
+                return wrapResponse(
+                  error: PlatformException(
+                    code: 'error',
+                    message: e.toString(),
+                  ),
+                );
+              }
+            });
+      }
+    }
+    {
+      final BasicMessageChannel<Object?>
+      pigeonVar_channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.getTileOverlays$messageChannelSuffix',
+        pigeonChannelCodec,
+        binaryMessenger: binaryMessenger,
+      );
+      if (api == null) {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, null);
+      } else {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, (
+              Object? message,
+            ) async {
+              try {
+                final List<TileOverlayDto> output = api.getTileOverlays();
+                return <Object?>[output];
+              } on PlatformException catch (e) {
+                return wrapResponse(error: e);
+              } catch (e) {
+                return wrapResponse(
+                  error: PlatformException(
+                    code: 'error',
+                    message: e.toString(),
+                  ),
+                );
+              }
+            });
+      }
+    }
+    {
+      final BasicMessageChannel<Object?>
+      pigeonVar_channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.addTileOverlays$messageChannelSuffix',
+        pigeonChannelCodec,
+        binaryMessenger: binaryMessenger,
+      );
+      if (api == null) {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, null);
+      } else {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, (
+              Object? message,
+            ) async {
+              assert(
+                message != null,
+                'Argument for dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.addTileOverlays was null.',
+              );
+              final List<Object?> args = (message as List<Object?>?)!;
+              final List<TileOverlayDto>? arg_tileOverlays =
+                  (args[0] as List<Object?>?)?.cast<TileOverlayDto>();
+              assert(
+                arg_tileOverlays != null,
+                'Argument for dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.addTileOverlays was null, expected non-null List<TileOverlayDto>.',
+              );
+              try {
+                final List<TileOverlayDto> output = api.addTileOverlays(
+                  arg_tileOverlays!,
+                );
+                return <Object?>[output];
+              } on PlatformException catch (e) {
+                return wrapResponse(error: e);
+              } catch (e) {
+                return wrapResponse(
+                  error: PlatformException(
+                    code: 'error',
+                    message: e.toString(),
+                  ),
+                );
+              }
+            });
+      }
+    }
+    {
+      final BasicMessageChannel<Object?>
+      pigeonVar_channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.updateTileOverlays$messageChannelSuffix',
+        pigeonChannelCodec,
+        binaryMessenger: binaryMessenger,
+      );
+      if (api == null) {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, null);
+      } else {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, (
+              Object? message,
+            ) async {
+              assert(
+                message != null,
+                'Argument for dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.updateTileOverlays was null.',
+              );
+              final List<Object?> args = (message as List<Object?>?)!;
+              final List<TileOverlayDto>? arg_tileOverlays =
+                  (args[0] as List<Object?>?)?.cast<TileOverlayDto>();
+              assert(
+                arg_tileOverlays != null,
+                'Argument for dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.updateTileOverlays was null, expected non-null List<TileOverlayDto>.',
+              );
+              try {
+                final List<TileOverlayDto> output = api.updateTileOverlays(
+                  arg_tileOverlays!,
+                );
+                return <Object?>[output];
+              } on PlatformException catch (e) {
+                return wrapResponse(error: e);
+              } catch (e) {
+                return wrapResponse(
+                  error: PlatformException(
+                    code: 'error',
+                    message: e.toString(),
+                  ),
+                );
+              }
+            });
+      }
+    }
+    {
+      final BasicMessageChannel<Object?>
+      pigeonVar_channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.removeTileOverlays$messageChannelSuffix',
+        pigeonChannelCodec,
+        binaryMessenger: binaryMessenger,
+      );
+      if (api == null) {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, null);
+      } else {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, (
+              Object? message,
+            ) async {
+              assert(
+                message != null,
+                'Argument for dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.removeTileOverlays was null.',
+              );
+              final List<Object?> args = (message as List<Object?>?)!;
+              final List<TileOverlayDto>? arg_tileOverlays =
+                  (args[0] as List<Object?>?)?.cast<TileOverlayDto>();
+              assert(
+                arg_tileOverlays != null,
+                'Argument for dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.removeTileOverlays was null, expected non-null List<TileOverlayDto>.',
+              );
+              try {
+                api.removeTileOverlays(arg_tileOverlays!);
+                return wrapResponse(empty: true);
+              } on PlatformException catch (e) {
+                return wrapResponse(error: e);
+              } catch (e) {
+                return wrapResponse(
+                  error: PlatformException(
+                    code: 'error',
+                    message: e.toString(),
+                  ),
+                );
+              }
+            });
+      }
+    }
+    {
+      final BasicMessageChannel<Object?>
+      pigeonVar_channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.clearTileOverlays$messageChannelSuffix',
+        pigeonChannelCodec,
+        binaryMessenger: binaryMessenger,
+      );
+      if (api == null) {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, null);
+      } else {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, (
+              Object? message,
+            ) async {
+              try {
+                api.clearTileOverlays();
+                return wrapResponse(empty: true);
+              } on PlatformException catch (e) {
+                return wrapResponse(error: e);
+              } catch (e) {
+                return wrapResponse(
+                  error: PlatformException(
+                    code: 'error',
+                    message: e.toString(),
+                  ),
+                );
+              }
+            });
+      }
+    }
+    {
+      final BasicMessageChannel<Object?>
+      pigeonVar_channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.clearTileCache$messageChannelSuffix',
+        pigeonChannelCodec,
+        binaryMessenger: binaryMessenger,
+      );
+      if (api == null) {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, null);
+      } else {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(pigeonVar_channel, (
+              Object? message,
+            ) async {
+              assert(
+                message != null,
+                'Argument for dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.clearTileCache was null.',
+              );
+              final List<Object?> args = (message as List<Object?>?)!;
+              final String? arg_tileOverlayId = (args[0] as String?);
+              assert(
+                arg_tileOverlayId != null,
+                'Argument for dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.clearTileCache was null, expected non-null String.',
+              );
+              try {
+                api.clearTileCache(arg_tileOverlayId!);
                 return wrapResponse(empty: true);
               } on PlatformException catch (e) {
                 return wrapResponse(error: e);

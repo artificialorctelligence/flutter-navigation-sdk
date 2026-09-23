@@ -14,6 +14,7 @@
 
 export 'camera.dart';
 export 'circle.dart';
+export 'tile_overlay.dart';
 export 'destinations.dart';
 export 'indoor.dart';
 export 'latlng.dart';

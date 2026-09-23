@@ -468,6 +468,30 @@ class GoogleMapsAutoViewMessageHandler(private val viewRegistry: GoogleMapsViewR
     getView().clearCircles()
   }
 
+  override fun getTileOverlays(): List<TileOverlayDto> {
+    return getView().getTileOverlays()
+  }
+
+  override fun addTileOverlays(tileOverlays: List<TileOverlayDto>): List<TileOverlayDto> {
+    return getView().addTileOverlays(tileOverlays)
+  }
+
+  override fun updateTileOverlays(tileOverlays: List<TileOverlayDto>): List<TileOverlayDto> {
+    return getView().updateTileOverlays(tileOverlays)
+  }
+
+  override fun removeTileOverlays(tileOverlays: List<TileOverlayDto>) {
+    getView().removeTileOverlays(tileOverlays)
+  }
+
+  override fun clearTileOverlays() {
+    getView().clearTileOverlays()
+  }
+
+  override fun clearTileCache(tileOverlayId: String) {
+    getView().clearTileCache(tileOverlayId)
+  }
+
   override fun enableOnCameraChangedEvents() {
     getView().enableOnCameraChangedEvents()
   }
