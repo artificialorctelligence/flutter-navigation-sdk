@@ -389,6 +389,58 @@ class GoogleMapsAutoViewController {
     return GoogleMapsNavigationPlatform.instance.autoAPI.clearCircles();
   }
 
+  /// Gets all tile overlays from the Android Auto or CarPlay map view.
+  Future<List<TileOverlay?>> getTileOverlays() {
+    return GoogleMapsNavigationPlatform.instance.autoAPI.getTileOverlays();
+  }
+
+  /// Adds raster tile overlays to the Android Auto or CarPlay map view.
+  ///
+  /// Imagery layers — weather radar, satellite — are raster tiles, which the vector primitives
+  /// cannot express. Each [TileOverlayOptions.urlTemplate] must carry `{x}`, `{y}` and `{z}`;
+  /// the platform substitutes them and fetches the tiles itself.
+  Future<List<TileOverlay?>> addTileOverlays(
+    List<TileOverlayOptions> options,
+  ) {
+    return GoogleMapsNavigationPlatform.instance.autoAPI.addTileOverlays(
+      options: options,
+    );
+  }
+
+  /// Updates tile overlays on the Android Auto or CarPlay map view.
+  ///
+  /// [TileOverlayOptions.urlTemplate] and [TileOverlayOptions.tileSize] are fixed when an
+  /// overlay is created; changing either means removing the overlay and adding it again.
+  Future<List<TileOverlay?>> updateTileOverlays(
+    List<TileOverlay> tileOverlays,
+  ) {
+    return GoogleMapsNavigationPlatform.instance.autoAPI.updateTileOverlays(
+      tileOverlays: tileOverlays,
+    );
+  }
+
+  /// Removes tile overlays from the Android Auto or CarPlay map view.
+  Future<void> removeTileOverlays(List<TileOverlay> tileOverlays) {
+    return GoogleMapsNavigationPlatform.instance.autoAPI.removeTileOverlays(
+      tileOverlays: tileOverlays,
+    );
+  }
+
+  /// Removes all tile overlays from the Android Auto or CarPlay map view.
+  Future<void> clearTileOverlays() {
+    return GoogleMapsNavigationPlatform.instance.autoAPI.clearTileOverlays();
+  }
+
+  /// Drops the cached tiles of one overlay.
+  ///
+  /// A layer whose tiles change over time — a radar frame, say — refreshes without being
+  /// removed and added again.
+  Future<void> clearTileCache(String tileOverlayId) {
+    return GoogleMapsNavigationPlatform.instance.autoAPI.clearTileCache(
+      tileOverlayId: tileOverlayId,
+    );
+  }
+
   /// Remove all markers, polylines, polygons, overlays, etc from the map view.
   Future<void> clear() {
     return GoogleMapsNavigationPlatform.instance.autoAPI.clear();

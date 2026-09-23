@@ -1773,6 +1773,123 @@ class CircleOptionsDto {
   int get hashCode => Object.hashAll(_toList());
 }
 
+/// A raster tile overlay drawn on top of the base map, fetched from a URL template.
+///
+/// Weather radar, satellite imagery and similar layers are raster tiles; the map's vector
+/// primitives (polygon, polyline, marker, circle) cannot express them.
+class TileOverlayDto {
+  TileOverlayDto({required this.tileOverlayId, required this.options});
+
+  /// Identifies the tile overlay.
+  String tileOverlayId;
+
+  /// Options for the tile overlay.
+  TileOverlayOptionsDto options;
+
+  List<Object?> _toList() {
+    return <Object?>[tileOverlayId, options];
+  }
+
+  Object encode() {
+    return _toList();
+  }
+
+  static TileOverlayDto decode(Object result) {
+    result as List<Object?>;
+    return TileOverlayDto(
+      tileOverlayId: result[0]! as String,
+      options: result[1]! as TileOverlayOptionsDto,
+    );
+  }
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes
+  bool operator ==(Object other) {
+    if (other is! TileOverlayDto || other.runtimeType != runtimeType) {
+      return false;
+    }
+    if (identical(this, other)) {
+      return true;
+    }
+    return _deepEquals(encode(), other.encode());
+  }
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes
+  int get hashCode => Object.hashAll(_toList());
+}
+
+class TileOverlayOptionsDto {
+  TileOverlayOptionsDto({
+    required this.urlTemplate,
+    required this.tileSize,
+    required this.zIndex,
+    required this.transparency,
+    required this.visible,
+    required this.fadeIn,
+  });
+
+  /// URL with `{x}`, `{y}` and `{z}` placeholders, substituted per tile by the platform's own
+  /// URL tile provider (`UrlTileProvider` on Android, `GMSURLTileLayer` on iOS), so tile bytes
+  /// never cross the method channel.
+  String urlTemplate;
+
+  /// Edge length in points of each tile the template serves; usually 256 or 512.
+  int tileSize;
+
+  double zIndex;
+
+  /// 0.0 fully opaque, 1.0 fully transparent. iOS takes the complement as its layer opacity.
+  double transparency;
+
+  bool visible;
+
+  bool fadeIn;
+
+  List<Object?> _toList() {
+    return <Object?>[
+      urlTemplate,
+      tileSize,
+      zIndex,
+      transparency,
+      visible,
+      fadeIn,
+    ];
+  }
+
+  Object encode() {
+    return _toList();
+  }
+
+  static TileOverlayOptionsDto decode(Object result) {
+    result as List<Object?>;
+    return TileOverlayOptionsDto(
+      urlTemplate: result[0]! as String,
+      tileSize: result[1]! as int,
+      zIndex: result[2]! as double,
+      transparency: result[3]! as double,
+      visible: result[4]! as bool,
+      fadeIn: result[5]! as bool,
+    );
+  }
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes
+  bool operator ==(Object other) {
+    if (other is! TileOverlayOptionsDto || other.runtimeType != runtimeType) {
+      return false;
+    }
+    if (identical(this, other)) {
+      return true;
+    }
+    return _deepEquals(encode(), other.encode());
+  }
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes
+  int get hashCode => Object.hashAll(_toList());
+}
+
 class MapPaddingDto {
   MapPaddingDto({
     required this.top,
@@ -3490,89 +3607,95 @@ class _PigeonCodec extends StandardMessageCodec {
     } else if (value is CircleOptionsDto) {
       buffer.putUint8(177);
       writeValue(buffer, value.encode());
-    } else if (value is MapPaddingDto) {
+    } else if (value is TileOverlayDto) {
       buffer.putUint8(178);
       writeValue(buffer, value.encode());
-    } else if (value is NavigationHeaderStylingOptionsDto) {
+    } else if (value is TileOverlayOptionsDto) {
       buffer.putUint8(179);
       writeValue(buffer, value.encode());
-    } else if (value is RouteTokenOptionsDto) {
+    } else if (value is MapPaddingDto) {
       buffer.putUint8(180);
       writeValue(buffer, value.encode());
-    } else if (value is DestinationsDto) {
+    } else if (value is NavigationHeaderStylingOptionsDto) {
       buffer.putUint8(181);
       writeValue(buffer, value.encode());
-    } else if (value is RoutingOptionsDto) {
+    } else if (value is RouteTokenOptionsDto) {
       buffer.putUint8(182);
       writeValue(buffer, value.encode());
-    } else if (value is NavigationDisplayOptionsDto) {
+    } else if (value is DestinationsDto) {
       buffer.putUint8(183);
       writeValue(buffer, value.encode());
-    } else if (value is NavigationWaypointDto) {
+    } else if (value is RoutingOptionsDto) {
       buffer.putUint8(184);
       writeValue(buffer, value.encode());
-    } else if (value is ContinueToNextDestinationResponseDto) {
+    } else if (value is NavigationDisplayOptionsDto) {
       buffer.putUint8(185);
       writeValue(buffer, value.encode());
-    } else if (value is NavigationTimeAndDistanceDto) {
+    } else if (value is NavigationWaypointDto) {
       buffer.putUint8(186);
       writeValue(buffer, value.encode());
-    } else if (value is NavigationAudioGuidanceSettingsDto) {
+    } else if (value is ContinueToNextDestinationResponseDto) {
       buffer.putUint8(187);
       writeValue(buffer, value.encode());
-    } else if (value is SimulationOptionsDto) {
+    } else if (value is NavigationTimeAndDistanceDto) {
       buffer.putUint8(188);
       writeValue(buffer, value.encode());
-    } else if (value is LatLngDto) {
+    } else if (value is NavigationAudioGuidanceSettingsDto) {
       buffer.putUint8(189);
       writeValue(buffer, value.encode());
-    } else if (value is LatLngBoundsDto) {
+    } else if (value is SimulationOptionsDto) {
       buffer.putUint8(190);
       writeValue(buffer, value.encode());
-    } else if (value is ScreenCoordinateDto) {
+    } else if (value is LatLngDto) {
       buffer.putUint8(191);
       writeValue(buffer, value.encode());
-    } else if (value is SpeedingUpdatedEventDto) {
+    } else if (value is LatLngBoundsDto) {
       buffer.putUint8(192);
       writeValue(buffer, value.encode());
-    } else if (value is GpsAvailabilityChangeEventDto) {
+    } else if (value is ScreenCoordinateDto) {
       buffer.putUint8(193);
       writeValue(buffer, value.encode());
-    } else if (value is SpeedAlertOptionsThresholdPercentageDto) {
+    } else if (value is SpeedingUpdatedEventDto) {
       buffer.putUint8(194);
       writeValue(buffer, value.encode());
-    } else if (value is SpeedAlertOptionsDto) {
+    } else if (value is GpsAvailabilityChangeEventDto) {
       buffer.putUint8(195);
       writeValue(buffer, value.encode());
-    } else if (value is RouteSegmentTrafficDataRoadStretchRenderingDataDto) {
+    } else if (value is SpeedAlertOptionsThresholdPercentageDto) {
       buffer.putUint8(196);
       writeValue(buffer, value.encode());
-    } else if (value is RouteSegmentTrafficDataDto) {
+    } else if (value is SpeedAlertOptionsDto) {
       buffer.putUint8(197);
       writeValue(buffer, value.encode());
-    } else if (value is RouteSegmentDto) {
+    } else if (value is RouteSegmentTrafficDataRoadStretchRenderingDataDto) {
       buffer.putUint8(198);
       writeValue(buffer, value.encode());
-    } else if (value is LaneDirectionDto) {
+    } else if (value is RouteSegmentTrafficDataDto) {
       buffer.putUint8(199);
       writeValue(buffer, value.encode());
-    } else if (value is LaneDto) {
+    } else if (value is RouteSegmentDto) {
       buffer.putUint8(200);
       writeValue(buffer, value.encode());
-    } else if (value is StepInfoDto) {
+    } else if (value is LaneDirectionDto) {
       buffer.putUint8(201);
       writeValue(buffer, value.encode());
-    } else if (value is NavInfoDto) {
+    } else if (value is LaneDto) {
       buffer.putUint8(202);
       writeValue(buffer, value.encode());
-    } else if (value is TermsAndConditionsUIParamsDto) {
+    } else if (value is StepInfoDto) {
       buffer.putUint8(203);
       writeValue(buffer, value.encode());
-    } else if (value is NavigationNotificationOptionsDto) {
+    } else if (value is NavInfoDto) {
       buffer.putUint8(204);
       writeValue(buffer, value.encode());
-    } else if (value is StepImageGenerationOptionsDto) {
+    } else if (value is TermsAndConditionsUIParamsDto) {
       buffer.putUint8(205);
+      writeValue(buffer, value.encode());
+    } else if (value is NavigationNotificationOptionsDto) {
+      buffer.putUint8(206);
+      writeValue(buffer, value.encode());
+    } else if (value is StepImageGenerationOptionsDto) {
+      buffer.putUint8(207);
       writeValue(buffer, value.encode());
     } else {
       super.writeValue(buffer, value);
@@ -3714,64 +3837,68 @@ class _PigeonCodec extends StandardMessageCodec {
       case 177:
         return CircleOptionsDto.decode(readValue(buffer)!);
       case 178:
-        return MapPaddingDto.decode(readValue(buffer)!);
+        return TileOverlayDto.decode(readValue(buffer)!);
       case 179:
-        return NavigationHeaderStylingOptionsDto.decode(readValue(buffer)!);
+        return TileOverlayOptionsDto.decode(readValue(buffer)!);
       case 180:
-        return RouteTokenOptionsDto.decode(readValue(buffer)!);
+        return MapPaddingDto.decode(readValue(buffer)!);
       case 181:
-        return DestinationsDto.decode(readValue(buffer)!);
+        return NavigationHeaderStylingOptionsDto.decode(readValue(buffer)!);
       case 182:
-        return RoutingOptionsDto.decode(readValue(buffer)!);
+        return RouteTokenOptionsDto.decode(readValue(buffer)!);
       case 183:
-        return NavigationDisplayOptionsDto.decode(readValue(buffer)!);
+        return DestinationsDto.decode(readValue(buffer)!);
       case 184:
-        return NavigationWaypointDto.decode(readValue(buffer)!);
+        return RoutingOptionsDto.decode(readValue(buffer)!);
       case 185:
-        return ContinueToNextDestinationResponseDto.decode(readValue(buffer)!);
+        return NavigationDisplayOptionsDto.decode(readValue(buffer)!);
       case 186:
-        return NavigationTimeAndDistanceDto.decode(readValue(buffer)!);
+        return NavigationWaypointDto.decode(readValue(buffer)!);
       case 187:
-        return NavigationAudioGuidanceSettingsDto.decode(readValue(buffer)!);
+        return ContinueToNextDestinationResponseDto.decode(readValue(buffer)!);
       case 188:
-        return SimulationOptionsDto.decode(readValue(buffer)!);
+        return NavigationTimeAndDistanceDto.decode(readValue(buffer)!);
       case 189:
-        return LatLngDto.decode(readValue(buffer)!);
+        return NavigationAudioGuidanceSettingsDto.decode(readValue(buffer)!);
       case 190:
-        return LatLngBoundsDto.decode(readValue(buffer)!);
+        return SimulationOptionsDto.decode(readValue(buffer)!);
       case 191:
-        return ScreenCoordinateDto.decode(readValue(buffer)!);
+        return LatLngDto.decode(readValue(buffer)!);
       case 192:
-        return SpeedingUpdatedEventDto.decode(readValue(buffer)!);
+        return LatLngBoundsDto.decode(readValue(buffer)!);
       case 193:
-        return GpsAvailabilityChangeEventDto.decode(readValue(buffer)!);
+        return ScreenCoordinateDto.decode(readValue(buffer)!);
       case 194:
+        return SpeedingUpdatedEventDto.decode(readValue(buffer)!);
+      case 195:
+        return GpsAvailabilityChangeEventDto.decode(readValue(buffer)!);
+      case 196:
         return SpeedAlertOptionsThresholdPercentageDto.decode(
           readValue(buffer)!,
         );
-      case 195:
+      case 197:
         return SpeedAlertOptionsDto.decode(readValue(buffer)!);
-      case 196:
+      case 198:
         return RouteSegmentTrafficDataRoadStretchRenderingDataDto.decode(
           readValue(buffer)!,
         );
-      case 197:
-        return RouteSegmentTrafficDataDto.decode(readValue(buffer)!);
-      case 198:
-        return RouteSegmentDto.decode(readValue(buffer)!);
       case 199:
-        return LaneDirectionDto.decode(readValue(buffer)!);
+        return RouteSegmentTrafficDataDto.decode(readValue(buffer)!);
       case 200:
-        return LaneDto.decode(readValue(buffer)!);
+        return RouteSegmentDto.decode(readValue(buffer)!);
       case 201:
-        return StepInfoDto.decode(readValue(buffer)!);
+        return LaneDirectionDto.decode(readValue(buffer)!);
       case 202:
-        return NavInfoDto.decode(readValue(buffer)!);
+        return LaneDto.decode(readValue(buffer)!);
       case 203:
-        return TermsAndConditionsUIParamsDto.decode(readValue(buffer)!);
+        return StepInfoDto.decode(readValue(buffer)!);
       case 204:
-        return NavigationNotificationOptionsDto.decode(readValue(buffer)!);
+        return NavInfoDto.decode(readValue(buffer)!);
       case 205:
+        return TermsAndConditionsUIParamsDto.decode(readValue(buffer)!);
+      case 206:
+        return NavigationNotificationOptionsDto.decode(readValue(buffer)!);
+      case 207:
         return StepImageGenerationOptionsDto.decode(readValue(buffer)!);
       default:
         return super.readValueOfType(type, buffer);
@@ -7095,6 +7222,194 @@ class MapViewApi {
         );
     final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
       <Object?>[viewId],
+    );
+    final List<Object?>? pigeonVar_replyList =
+        await pigeonVar_sendFuture as List<Object?>?;
+    if (pigeonVar_replyList == null) {
+      throw _createConnectionError(pigeonVar_channelName);
+    } else if (pigeonVar_replyList.length > 1) {
+      throw PlatformException(
+        code: pigeonVar_replyList[0]! as String,
+        message: pigeonVar_replyList[1] as String?,
+        details: pigeonVar_replyList[2],
+      );
+    } else {
+      return;
+    }
+  }
+
+  Future<List<TileOverlayDto>> getTileOverlays(int viewId) async {
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.google_navigation_flutter.MapViewApi.getTileOverlays$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
+          pigeonVar_channelName,
+          pigeonChannelCodec,
+          binaryMessenger: pigeonVar_binaryMessenger,
+        );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[viewId],
+    );
+    final List<Object?>? pigeonVar_replyList =
+        await pigeonVar_sendFuture as List<Object?>?;
+    if (pigeonVar_replyList == null) {
+      throw _createConnectionError(pigeonVar_channelName);
+    } else if (pigeonVar_replyList.length > 1) {
+      throw PlatformException(
+        code: pigeonVar_replyList[0]! as String,
+        message: pigeonVar_replyList[1] as String?,
+        details: pigeonVar_replyList[2],
+      );
+    } else if (pigeonVar_replyList[0] == null) {
+      throw PlatformException(
+        code: 'null-error',
+        message: 'Host platform returned null value for non-null return value.',
+      );
+    } else {
+      return (pigeonVar_replyList[0] as List<Object?>?)!.cast<TileOverlayDto>();
+    }
+  }
+
+  Future<List<TileOverlayDto>> addTileOverlays(
+    int viewId,
+    List<TileOverlayDto> tileOverlays,
+  ) async {
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.google_navigation_flutter.MapViewApi.addTileOverlays$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
+          pigeonVar_channelName,
+          pigeonChannelCodec,
+          binaryMessenger: pigeonVar_binaryMessenger,
+        );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[viewId, tileOverlays],
+    );
+    final List<Object?>? pigeonVar_replyList =
+        await pigeonVar_sendFuture as List<Object?>?;
+    if (pigeonVar_replyList == null) {
+      throw _createConnectionError(pigeonVar_channelName);
+    } else if (pigeonVar_replyList.length > 1) {
+      throw PlatformException(
+        code: pigeonVar_replyList[0]! as String,
+        message: pigeonVar_replyList[1] as String?,
+        details: pigeonVar_replyList[2],
+      );
+    } else if (pigeonVar_replyList[0] == null) {
+      throw PlatformException(
+        code: 'null-error',
+        message: 'Host platform returned null value for non-null return value.',
+      );
+    } else {
+      return (pigeonVar_replyList[0] as List<Object?>?)!.cast<TileOverlayDto>();
+    }
+  }
+
+  Future<List<TileOverlayDto>> updateTileOverlays(
+    int viewId,
+    List<TileOverlayDto> tileOverlays,
+  ) async {
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.google_navigation_flutter.MapViewApi.updateTileOverlays$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
+          pigeonVar_channelName,
+          pigeonChannelCodec,
+          binaryMessenger: pigeonVar_binaryMessenger,
+        );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[viewId, tileOverlays],
+    );
+    final List<Object?>? pigeonVar_replyList =
+        await pigeonVar_sendFuture as List<Object?>?;
+    if (pigeonVar_replyList == null) {
+      throw _createConnectionError(pigeonVar_channelName);
+    } else if (pigeonVar_replyList.length > 1) {
+      throw PlatformException(
+        code: pigeonVar_replyList[0]! as String,
+        message: pigeonVar_replyList[1] as String?,
+        details: pigeonVar_replyList[2],
+      );
+    } else if (pigeonVar_replyList[0] == null) {
+      throw PlatformException(
+        code: 'null-error',
+        message: 'Host platform returned null value for non-null return value.',
+      );
+    } else {
+      return (pigeonVar_replyList[0] as List<Object?>?)!.cast<TileOverlayDto>();
+    }
+  }
+
+  Future<void> removeTileOverlays(
+    int viewId,
+    List<TileOverlayDto> tileOverlays,
+  ) async {
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.google_navigation_flutter.MapViewApi.removeTileOverlays$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
+          pigeonVar_channelName,
+          pigeonChannelCodec,
+          binaryMessenger: pigeonVar_binaryMessenger,
+        );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[viewId, tileOverlays],
+    );
+    final List<Object?>? pigeonVar_replyList =
+        await pigeonVar_sendFuture as List<Object?>?;
+    if (pigeonVar_replyList == null) {
+      throw _createConnectionError(pigeonVar_channelName);
+    } else if (pigeonVar_replyList.length > 1) {
+      throw PlatformException(
+        code: pigeonVar_replyList[0]! as String,
+        message: pigeonVar_replyList[1] as String?,
+        details: pigeonVar_replyList[2],
+      );
+    } else {
+      return;
+    }
+  }
+
+  Future<void> clearTileOverlays(int viewId) async {
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.google_navigation_flutter.MapViewApi.clearTileOverlays$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
+          pigeonVar_channelName,
+          pigeonChannelCodec,
+          binaryMessenger: pigeonVar_binaryMessenger,
+        );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[viewId],
+    );
+    final List<Object?>? pigeonVar_replyList =
+        await pigeonVar_sendFuture as List<Object?>?;
+    if (pigeonVar_replyList == null) {
+      throw _createConnectionError(pigeonVar_channelName);
+    } else if (pigeonVar_replyList.length > 1) {
+      throw PlatformException(
+        code: pigeonVar_replyList[0]! as String,
+        message: pigeonVar_replyList[1] as String?,
+        details: pigeonVar_replyList[2],
+      );
+    } else {
+      return;
+    }
+  }
+
+  /// Drops cached tiles for one overlay, so a layer whose tiles change over time (radar frames,
+  /// for example) can be refreshed without being removed and added again.
+  Future<void> clearTileCache(int viewId, String tileOverlayId) async {
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.google_navigation_flutter.MapViewApi.clearTileCache$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
+          pigeonVar_channelName,
+          pigeonChannelCodec,
+          binaryMessenger: pigeonVar_binaryMessenger,
+        );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[viewId, tileOverlayId],
     );
     final List<Object?>? pigeonVar_replyList =
         await pigeonVar_sendFuture as List<Object?>?;
@@ -12270,6 +12585,183 @@ class AutoMapViewApi {
           binaryMessenger: pigeonVar_binaryMessenger,
         );
     final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
+    final List<Object?>? pigeonVar_replyList =
+        await pigeonVar_sendFuture as List<Object?>?;
+    if (pigeonVar_replyList == null) {
+      throw _createConnectionError(pigeonVar_channelName);
+    } else if (pigeonVar_replyList.length > 1) {
+      throw PlatformException(
+        code: pigeonVar_replyList[0]! as String,
+        message: pigeonVar_replyList[1] as String?,
+        details: pigeonVar_replyList[2],
+      );
+    } else {
+      return;
+    }
+  }
+
+  Future<List<TileOverlayDto>> getTileOverlays() async {
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.getTileOverlays$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
+          pigeonVar_channelName,
+          pigeonChannelCodec,
+          binaryMessenger: pigeonVar_binaryMessenger,
+        );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
+    final List<Object?>? pigeonVar_replyList =
+        await pigeonVar_sendFuture as List<Object?>?;
+    if (pigeonVar_replyList == null) {
+      throw _createConnectionError(pigeonVar_channelName);
+    } else if (pigeonVar_replyList.length > 1) {
+      throw PlatformException(
+        code: pigeonVar_replyList[0]! as String,
+        message: pigeonVar_replyList[1] as String?,
+        details: pigeonVar_replyList[2],
+      );
+    } else if (pigeonVar_replyList[0] == null) {
+      throw PlatformException(
+        code: 'null-error',
+        message: 'Host platform returned null value for non-null return value.',
+      );
+    } else {
+      return (pigeonVar_replyList[0] as List<Object?>?)!.cast<TileOverlayDto>();
+    }
+  }
+
+  Future<List<TileOverlayDto>> addTileOverlays(
+    List<TileOverlayDto> tileOverlays,
+  ) async {
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.addTileOverlays$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
+          pigeonVar_channelName,
+          pigeonChannelCodec,
+          binaryMessenger: pigeonVar_binaryMessenger,
+        );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[tileOverlays],
+    );
+    final List<Object?>? pigeonVar_replyList =
+        await pigeonVar_sendFuture as List<Object?>?;
+    if (pigeonVar_replyList == null) {
+      throw _createConnectionError(pigeonVar_channelName);
+    } else if (pigeonVar_replyList.length > 1) {
+      throw PlatformException(
+        code: pigeonVar_replyList[0]! as String,
+        message: pigeonVar_replyList[1] as String?,
+        details: pigeonVar_replyList[2],
+      );
+    } else if (pigeonVar_replyList[0] == null) {
+      throw PlatformException(
+        code: 'null-error',
+        message: 'Host platform returned null value for non-null return value.',
+      );
+    } else {
+      return (pigeonVar_replyList[0] as List<Object?>?)!.cast<TileOverlayDto>();
+    }
+  }
+
+  Future<List<TileOverlayDto>> updateTileOverlays(
+    List<TileOverlayDto> tileOverlays,
+  ) async {
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.updateTileOverlays$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
+          pigeonVar_channelName,
+          pigeonChannelCodec,
+          binaryMessenger: pigeonVar_binaryMessenger,
+        );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[tileOverlays],
+    );
+    final List<Object?>? pigeonVar_replyList =
+        await pigeonVar_sendFuture as List<Object?>?;
+    if (pigeonVar_replyList == null) {
+      throw _createConnectionError(pigeonVar_channelName);
+    } else if (pigeonVar_replyList.length > 1) {
+      throw PlatformException(
+        code: pigeonVar_replyList[0]! as String,
+        message: pigeonVar_replyList[1] as String?,
+        details: pigeonVar_replyList[2],
+      );
+    } else if (pigeonVar_replyList[0] == null) {
+      throw PlatformException(
+        code: 'null-error',
+        message: 'Host platform returned null value for non-null return value.',
+      );
+    } else {
+      return (pigeonVar_replyList[0] as List<Object?>?)!.cast<TileOverlayDto>();
+    }
+  }
+
+  Future<void> removeTileOverlays(List<TileOverlayDto> tileOverlays) async {
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.removeTileOverlays$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
+          pigeonVar_channelName,
+          pigeonChannelCodec,
+          binaryMessenger: pigeonVar_binaryMessenger,
+        );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[tileOverlays],
+    );
+    final List<Object?>? pigeonVar_replyList =
+        await pigeonVar_sendFuture as List<Object?>?;
+    if (pigeonVar_replyList == null) {
+      throw _createConnectionError(pigeonVar_channelName);
+    } else if (pigeonVar_replyList.length > 1) {
+      throw PlatformException(
+        code: pigeonVar_replyList[0]! as String,
+        message: pigeonVar_replyList[1] as String?,
+        details: pigeonVar_replyList[2],
+      );
+    } else {
+      return;
+    }
+  }
+
+  Future<void> clearTileOverlays() async {
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.clearTileOverlays$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
+          pigeonVar_channelName,
+          pigeonChannelCodec,
+          binaryMessenger: pigeonVar_binaryMessenger,
+        );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
+    final List<Object?>? pigeonVar_replyList =
+        await pigeonVar_sendFuture as List<Object?>?;
+    if (pigeonVar_replyList == null) {
+      throw _createConnectionError(pigeonVar_channelName);
+    } else if (pigeonVar_replyList.length > 1) {
+      throw PlatformException(
+        code: pigeonVar_replyList[0]! as String,
+        message: pigeonVar_replyList[1] as String?,
+        details: pigeonVar_replyList[2],
+      );
+    } else {
+      return;
+    }
+  }
+
+  Future<void> clearTileCache(String tileOverlayId) async {
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.google_navigation_flutter.AutoMapViewApi.clearTileCache$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
+          pigeonVar_channelName,
+          pigeonChannelCodec,
+          binaryMessenger: pigeonVar_binaryMessenger,
+        );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[tileOverlayId],
+    );
     final List<Object?>? pigeonVar_replyList =
         await pigeonVar_sendFuture as List<Object?>?;
     if (pigeonVar_replyList == null) {

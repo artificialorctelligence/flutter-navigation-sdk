@@ -582,6 +582,32 @@ class GoogleMapsNavigationViewMessageHandler: MapViewApi {
     try getView(viewId).clearCircles()
   }
 
+  func getTileOverlays(viewId: Int64) throws -> [TileOverlayDto] {
+    try getView(viewId).getTileOverlays()
+  }
+
+  func addTileOverlays(viewId: Int64, tileOverlays: [TileOverlayDto]) throws -> [TileOverlayDto] {
+    try getView(viewId).addTileOverlays(tileOverlays: tileOverlays)
+  }
+
+  func updateTileOverlays(viewId: Int64, tileOverlays: [TileOverlayDto]) throws
+    -> [TileOverlayDto]
+  {
+    try getView(viewId).updateTileOverlays(tileOverlays: tileOverlays)
+  }
+
+  func removeTileOverlays(viewId: Int64, tileOverlays: [TileOverlayDto]) throws {
+    try getView(viewId).removeTileOverlays(tileOverlays: tileOverlays)
+  }
+
+  func clearTileOverlays(viewId: Int64) throws {
+    try getView(viewId).clearTileOverlays()
+  }
+
+  func clearTileCache(viewId: Int64, tileOverlayId: String) throws {
+    try getView(viewId).clearTileCache(tileOverlayId: tileOverlayId)
+  }
+
   func clear(viewId: Int64) throws {
     try getView(viewId).clear()
   }

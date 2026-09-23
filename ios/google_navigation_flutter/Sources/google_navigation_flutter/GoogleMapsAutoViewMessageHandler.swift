@@ -516,6 +516,30 @@ class GoogleMapsAutoViewMessageHandler: AutoMapViewApi {
     try getView().clearCircles()
   }
 
+  func getTileOverlays() throws -> [TileOverlayDto] {
+    try getView().getTileOverlays()
+  }
+
+  func addTileOverlays(tileOverlays: [TileOverlayDto]) throws -> [TileOverlayDto] {
+    try getView().addTileOverlays(tileOverlays: tileOverlays)
+  }
+
+  func updateTileOverlays(tileOverlays: [TileOverlayDto]) throws -> [TileOverlayDto] {
+    try getView().updateTileOverlays(tileOverlays: tileOverlays)
+  }
+
+  func removeTileOverlays(tileOverlays: [TileOverlayDto]) throws {
+    try getView().removeTileOverlays(tileOverlays: tileOverlays)
+  }
+
+  func clearTileOverlays() throws {
+    try getView().clearTileOverlays()
+  }
+
+  func clearTileCache(tileOverlayId: String) throws {
+    try getView().clearTileCache(tileOverlayId: tileOverlayId)
+  }
+
   func clear() throws {
     try getView().clear()
   }

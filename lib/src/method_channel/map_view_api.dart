@@ -1085,6 +1085,83 @@ class MapViewAPIImpl {
   Future<void> clearCircles({required int viewId}) =>
       _viewApi.clearCircles(viewId).wrapPlatformException();
 
+  /// Get all tile overlays from map view.
+  Future<List<TileOverlay?>> getTileOverlays({required int viewId}) async {
+    final List<TileOverlayDto?> tileOverlays = await _viewApi
+        .getTileOverlays(viewId)
+        .wrapPlatformException();
+    return tileOverlays
+        .whereType<TileOverlayDto>()
+        .map((TileOverlayDto tileOverlay) => tileOverlay.toTileOverlay())
+        .toList();
+  }
+
+  /// Add tile overlays to map view.
+  Future<List<TileOverlay?>> addTileOverlays({
+    required int viewId,
+    required List<TileOverlayOptions> options,
+  }) async {
+    final List<TileOverlayDto> toAdd = options
+        .map(
+          (TileOverlayOptions options) =>
+              TileOverlayDto(tileOverlayId: '', options: options.toDto()),
+        )
+        .toList();
+    final List<TileOverlayDto?> added = await _viewApi
+        .addTileOverlays(viewId, toAdd)
+        .wrapPlatformException();
+
+    if (toAdd.length != added.length) {
+      throw Exception('Could not add all tile overlays to map view');
+    }
+
+    return added
+        .whereType<TileOverlayDto>()
+        .map((TileOverlayDto tileOverlay) => tileOverlay.toTileOverlay())
+        .toList();
+  }
+
+  /// Update tile overlays on the map view.
+  Future<List<TileOverlay?>> updateTileOverlays({
+    required int viewId,
+    required List<TileOverlay> tileOverlays,
+  }) async {
+    final List<TileOverlayDto> dtos = tileOverlays
+        .map((TileOverlay tileOverlay) => tileOverlay.toDto())
+        .toList();
+    final List<TileOverlayDto?> updated = await _viewApi
+        .updateTileOverlays(viewId, dtos)
+        .wrapPlatformException();
+
+    return updated
+        .whereType<TileOverlayDto>()
+        .map((TileOverlayDto tileOverlay) => tileOverlay.toTileOverlay())
+        .toList();
+  }
+
+  /// Remove tile overlays from map view.
+  Future<void> removeTileOverlays({
+    required int viewId,
+    required List<TileOverlay> tileOverlays,
+  }) {
+    final List<TileOverlayDto> dtos = tileOverlays
+        .map((TileOverlay tileOverlay) => tileOverlay.toDto())
+        .toList();
+    return _viewApi
+        .removeTileOverlays(viewId, dtos)
+        .wrapPlatformException();
+  }
+
+  /// Remove all tile overlays from map view.
+  Future<void> clearTileOverlays({required int viewId}) =>
+      _viewApi.clearTileOverlays(viewId).wrapPlatformException();
+
+  /// Drop cached tiles for one overlay, so a layer whose tiles change over time can refresh.
+  Future<void> clearTileCache({
+    required int viewId,
+    required String tileOverlayId,
+  }) => _viewApi.clearTileCache(viewId, tileOverlayId).wrapPlatformException();
+
   /// Register camera changed listeners.
   Future<void> enableOnCameraChangedEvents({required int viewId}) =>
       _viewApi.enableOnCameraChangedEvents(viewId).wrapPlatformException();

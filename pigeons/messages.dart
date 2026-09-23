@@ -506,6 +506,47 @@ class CircleOptionsDto {
   final bool clickable;
 }
 
+/// A raster tile overlay drawn on top of the base map, fetched from a URL template.
+///
+/// Weather radar, satellite imagery and similar layers are raster tiles; the map's vector
+/// primitives (polygon, polyline, marker, circle) cannot express them.
+class TileOverlayDto {
+  TileOverlayDto({required this.tileOverlayId, required this.options});
+
+  /// Identifies the tile overlay.
+  final String tileOverlayId;
+
+  /// Options for the tile overlay.
+  final TileOverlayOptionsDto options;
+}
+
+class TileOverlayOptionsDto {
+  const TileOverlayOptionsDto({
+    required this.urlTemplate,
+    required this.tileSize,
+    required this.zIndex,
+    required this.transparency,
+    required this.visible,
+    required this.fadeIn,
+  });
+
+  /// URL with `{x}`, `{y}` and `{z}` placeholders, substituted per tile by the platform's own
+  /// URL tile provider (`UrlTileProvider` on Android, `GMSURLTileLayer` on iOS), so tile bytes
+  /// never cross the method channel.
+  final String urlTemplate;
+
+  /// Edge length in points of each tile the template serves; usually 256 or 512.
+  final int tileSize;
+
+  final double zIndex;
+
+  /// 0.0 fully opaque, 1.0 fully transparent. iOS takes the complement as its layer opacity.
+  final double transparency;
+
+  final bool visible;
+  final bool fadeIn;
+}
+
 enum CameraEventTypeDto {
   moveStartedByApi,
   moveStartedByGesture,
@@ -775,6 +816,22 @@ abstract class MapViewApi {
   List<CircleDto> updateCircles(int viewId, List<CircleDto> circles);
   void removeCircles(int viewId, List<CircleDto> circles);
   void clearCircles(int viewId);
+
+  List<TileOverlayDto> getTileOverlays(int viewId);
+  List<TileOverlayDto> addTileOverlays(
+    int viewId,
+    List<TileOverlayDto> tileOverlays,
+  );
+  List<TileOverlayDto> updateTileOverlays(
+    int viewId,
+    List<TileOverlayDto> tileOverlays,
+  );
+  void removeTileOverlays(int viewId, List<TileOverlayDto> tileOverlays);
+  void clearTileOverlays(int viewId);
+
+  /// Drops cached tiles for one overlay, so a layer whose tiles change over time (radar frames,
+  /// for example) can be refreshed without being removed and added again.
+  void clearTileCache(int viewId, String tileOverlayId);
 
   void enableOnCameraChangedEvents(int viewId);
   void setPadding(int viewId, MapPaddingDto padding);
@@ -1790,6 +1847,13 @@ abstract class AutoMapViewApi {
   List<CircleDto> updateCircles(List<CircleDto> circles);
   void removeCircles(List<CircleDto> circles);
   void clearCircles();
+
+  List<TileOverlayDto> getTileOverlays();
+  List<TileOverlayDto> addTileOverlays(List<TileOverlayDto> tileOverlays);
+  List<TileOverlayDto> updateTileOverlays(List<TileOverlayDto> tileOverlays);
+  void removeTileOverlays(List<TileOverlayDto> tileOverlays);
+  void clearTileOverlays();
+  void clearTileCache(String tileOverlayId);
 
   void enableOnCameraChangedEvents();
   bool isAutoScreenAvailable();

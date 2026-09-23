@@ -14,6 +14,7 @@
 
 export 'auto_map_options.dart';
 export 'circles.dart';
+export 'tile_overlays.dart';
 export 'images.dart';
 export 'lat_lng.dart';
 export 'lat_lng_bounds.dart';

@@ -21,6 +21,7 @@ enum GoogleMapsNavigationViewError: Error {
   case polygonNotFound
   case polylineNotFound
   case circleNotFound
+  case tileOverlayNotFound
   case awaitViewReadyCalledMultipleTimes
   case mapStyleError
   case minZoomGreaterThanMaxZoom
@@ -38,6 +39,7 @@ public class GoogleMapsNavigationView: NSObject, FlutterPlatformView, ViewSettle
   private var _gmsPolygons: [GMSPolygon] = []
   private var _gmsPolylines: [GMSPolyline] = []
   private var _gmsCircles: [GMSCircle] = []
+  private var _tileLayers: [TileOverlayLayer] = []
   private var _mapConfiguration: MapConfiguration!
   private var _navigationUIEnabledPreference: NavigationUIEnabledPreference!
   private var _forceNightMode: GMSNavigationLightingMode?
@@ -1017,6 +1019,64 @@ public class GoogleMapsNavigationView: NSObject, FlutterPlatformView, ViewSettle
     _gmsCircles.removeAll()
   }
 
+  private func findTileLayer(tileOverlayId: String) -> TileOverlayLayer? {
+    _tileLayers.first { $0.tileOverlayId == tileOverlayId }
+  }
+
+  func getTileOverlays() -> [TileOverlayDto] {
+    _tileLayers.map { $0.toPigeonTileOverlay() }
+  }
+
+  func addTileOverlays(tileOverlays: [TileOverlayDto]) -> [TileOverlayDto] {
+    tileOverlays.map { tileOverlay in
+      let layer = TileOverlayLayer(
+        tileOverlayId: tileOverlay.tileOverlayId,
+        options: tileOverlay.options
+      )
+      // Visibility is handled by attaching to, or detaching from, the map — as circles are.
+      layer.map = tileOverlay.options.visible ? _mapView : nil
+      _tileLayers.append(layer)
+      return tileOverlay
+    }
+  }
+
+  func updateTileOverlays(tileOverlays: [TileOverlayDto]) throws -> [TileOverlayDto] {
+    try tileOverlays.map { tileOverlay in
+      guard let layer = findTileLayer(tileOverlayId: tileOverlay.tileOverlayId) else {
+        throw GoogleMapsNavigationViewError.tileOverlayNotFound
+      }
+      // The URL template and tile size are fixed when the layer is created; a layer needing a
+      // new template is removed and added again.
+      layer.apply(options: tileOverlay.options)
+      layer.map = tileOverlay.options.visible ? _mapView : nil
+      return tileOverlay
+    }
+  }
+
+  func removeTileOverlays(tileOverlays: [TileOverlayDto]) throws {
+    for tileOverlay in tileOverlays {
+      guard let layer = findTileLayer(tileOverlayId: tileOverlay.tileOverlayId) else {
+        throw GoogleMapsNavigationViewError.tileOverlayNotFound
+      }
+      layer.map = nil
+      _tileLayers.removeAll { $0.tileOverlayId == tileOverlay.tileOverlayId }
+    }
+  }
+
+  func clearTileOverlays() {
+    for layer in _tileLayers {
+      layer.map = nil
+    }
+    _tileLayers.removeAll()
+  }
+
+  func clearTileCache(tileOverlayId: String) throws {
+    guard let layer = findTileLayer(tileOverlayId: tileOverlayId) else {
+      throw GoogleMapsNavigationViewError.tileOverlayNotFound
+    }
+    layer.clearTileCache()
+  }
+
   func clear() {
     // The clear will remove everything from map view, so emptying
     // these arrays is enough.
@@ -1024,6 +1084,10 @@ public class GoogleMapsNavigationView: NSObject, FlutterPlatformView, ViewSettle
     _gmsPolylines.removeAll()
     _gmsPolygons.removeAll()
     _gmsCircles.removeAll()
+    for layer in _tileLayers {
+      layer.map = nil
+    }
+    _tileLayers.removeAll()
     _mapView.clear()
   }
 
