@@ -75,7 +75,7 @@ if (providers.gradleProperty("ktfmt").isPresent) {
 android {
     namespace = "com.google.maps.flutter.navigation"
 
-    compileSdk = 35
+    compileSdk = 36
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
