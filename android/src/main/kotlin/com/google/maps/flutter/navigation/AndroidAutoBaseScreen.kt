@@ -198,6 +198,8 @@ open class AndroidAutoBaseScreen(carContext: CarContext) :
       setReportIncidentButtonEnabled(false)
     }
 
+    onNavigationViewReady(navigationView)
+
     presentation.setContentView(navigationView)
     presentation.show()
 
@@ -257,11 +259,40 @@ open class AndroidAutoBaseScreen(carContext: CarContext) :
         }
         navigationView.addOnNavigationUiChangedListener(mNavigationUIChangedListener)
 
+        onCarMapReady(googleMap)
         sendAutoScreenAvailabilityChangedEvent(true)
         invalidate()
       }
     }
   }
+
+  /**
+   * Called once the car's [NavigationView] exists and has been configured, before it is shown.
+   *
+   * Override to turn the SDK's own navigation UI back on — the maneuver header, the ETA card — or
+   * to add a custom control with [NavigationView.setCustomControl], which is the supported way to
+   * put an app's own view on the car map without colliding with the SDK's chrome. The defaults
+   * this class applies (header, ETA card, speedometer and the rest switched off) have already run
+   * when this is called, so anything set here wins.
+   *
+   * Example:
+   * ```kotlin
+   * override fun onNavigationViewReady(navigationView: NavigationView) {
+   *   navigationView.setHeaderEnabled(true)
+   *   navigationView.setCustomControl(myView, CustomControlPosition.FOOTER)
+   * }
+   * ```
+   */
+  open fun onNavigationViewReady(navigationView: NavigationView) {}
+
+  /**
+   * Called once the car's [GoogleMap] exists, for map-level configuration a subclass needs.
+   *
+   * Separate from [onNavigationViewReady] because the map arrives asynchronously, well after the
+   * view is built. Useful for things like [GoogleMap.setPadding], which decides where the camera
+   * centres relative to the navigation chrome.
+   */
+  open fun onCarMapReady(googleMap: GoogleMap) {}
 
   override fun onSurfaceDestroyed(surfaceContainer: SurfaceContainer) {
     super.onSurfaceDestroyed(surfaceContainer)
