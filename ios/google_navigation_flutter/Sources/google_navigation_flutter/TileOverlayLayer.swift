@@ -23,6 +23,11 @@ class TileOverlayLayer: GMSURLTileLayer {
   private(set) var urlTemplate: String
   private(set) var transparency: Double
 
+  // Unoptimized on purpose: this init hands an escaping closure to an ObjC super.init while the
+  // object is still partially initialized, and Swift 6.4's CopyPropagation pass aborts on that
+  // shape (fatal error in verifySILValueHelper, -O only). Drop the attribute once the toolchain
+  // compiles it; -Onone builds never needed it.
+  @_optimize(none)
   init(tileOverlayId: String, options: TileOverlayOptionsDto) {
     self.tileOverlayId = tileOverlayId
     urlTemplate = options.urlTemplate
