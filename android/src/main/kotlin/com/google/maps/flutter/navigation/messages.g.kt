@@ -7484,19 +7484,29 @@ interface NavigationSessionApi {
             val companyNameArg = args[1] as String
             val shouldOnlyShowDriverAwarenessDisclaimerArg = args[2] as Boolean
             val uiParamsArg = args[3] as TermsAndConditionsUIParamsDto?
-            api.showTermsAndConditionsDialog(
-              titleArg,
-              companyNameArg,
-              shouldOnlyShowDriverAwarenessDisclaimerArg,
-              uiParamsArg,
-            ) { result: Result<Boolean> ->
-              val error = result.exceptionOrNull()
-              if (error != null) {
-                reply.reply(MessagesPigeonUtils.wrapError(error))
-              } else {
-                val data = result.getOrNull()
-                reply.reply(MessagesPigeonUtils.wrapResult(data))
+            // orcweather fork: an async handler is generated without a try/catch, unlike the
+            // synchronous ones, so a throw *before* the callback escapes onto the platform thread
+            // and kills the process instead of reaching Dart. This one can throw: showing the terms
+            // dialog needs an Activity, and a headless engine — an Android Auto session with the
+            // phone app never opened — has none. It crash-looped orcweather on a first run
+            // (2026-09-27). Upstream: the generator should wrap async calls the way it wraps sync.
+            try {
+              api.showTermsAndConditionsDialog(
+                titleArg,
+                companyNameArg,
+                shouldOnlyShowDriverAwarenessDisclaimerArg,
+                uiParamsArg,
+              ) { result: Result<Boolean> ->
+                val error = result.exceptionOrNull()
+                if (error != null) {
+                  reply.reply(MessagesPigeonUtils.wrapError(error))
+                } else {
+                  val data = result.getOrNull()
+                  reply.reply(MessagesPigeonUtils.wrapResult(data))
+                }
               }
+            } catch (error: Throwable) {
+              reply.reply(MessagesPigeonUtils.wrapError(error))
             }
           }
         } else {
