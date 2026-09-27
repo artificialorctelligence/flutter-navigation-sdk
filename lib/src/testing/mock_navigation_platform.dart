@@ -14,9 +14,9 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:google_navigation_flutter/google_navigation_flutter.dart';
-import 'package:google_navigation_flutter/src/google_navigation_flutter_platform_interface.dart';
-import 'package:google_navigation_flutter/src/method_channel/method_channel.dart';
+import '../../google_navigation_flutter.dart';
+import '../google_navigation_flutter_platform_interface.dart';
+import '../method_channel/method_channel.dart';
 
 /// Test-specific implementation of GoogleMapsNavigationPlatform.
 ///
@@ -145,13 +145,5 @@ class _MockPlatformViewState extends State<_MockPlatformView> {
       color: const Color(0xFFE0E0E0),
       child: Center(child: Text('Mock Map View $_viewId')),
     );
-  }
-}
-
-/// Test-specific implementation of NavigationSessionAPI
-class TestNavigationSessionAPIImpl extends NavigationSessionAPIImpl {
-  @override
-  Future<void> allowBackgroundLocationUpdates(bool allow) async {
-    // No-op for testing
   }
 }

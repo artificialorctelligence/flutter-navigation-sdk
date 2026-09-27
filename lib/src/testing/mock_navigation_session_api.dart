@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:google_navigation_flutter/src/method_channel/session_api.dart';
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
+import '../method_channel/session_api.dart';
 
 /// Test implementation of NavigationSessionAPIImpl that allows direct event injection.
 ///
@@ -25,6 +27,14 @@ class TestNavigationSessionAPIImpl extends NavigationSessionAPIImpl {
 
   /// Provides access to the test event API for injecting DTO events.
   NavigationSessionEventApiImpl get testEventApi => _testEventApi;
+
+  /// Merged in when these doubles moved into the shipped package: `mock_navigation_platform.dart`
+  /// carried a second class of this name whose only behaviour was this override, and exporting
+  /// both made the name ambiguous. One class, both behaviours.
+  @override
+  Future<void> allowBackgroundLocationUpdates(bool allow) async {
+    // No-op for testing.
+  }
 
   @override
   void ensureSessionAPISetUp() {

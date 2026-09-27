@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:google_navigation_flutter/src/method_channel/map_view_api.dart';
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
+import '../method_channel/map_view_api.dart';
 
 /// Test implementation of MapViewAPIImpl that allows direct event injection.
 ///

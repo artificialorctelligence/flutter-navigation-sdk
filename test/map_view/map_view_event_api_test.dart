@@ -16,9 +16,9 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_navigation_flutter/google_navigation_flutter.dart';
+import 'package:google_navigation_flutter/testing.dart';
 import 'package:google_navigation_flutter/src/method_channel/method_channel.dart';
 
-import '../helpers/mock_map_view_api.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
