@@ -11,6 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+// Modified 2026 by Artificial Orctelligence for orcweather: raster tile
+// overlays, and hooks for the car screen. Apache-2.0 section 4(b).
 
 import 'dart:async';
 import 'dart:io';

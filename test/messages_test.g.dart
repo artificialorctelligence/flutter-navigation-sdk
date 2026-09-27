@@ -16,6 +16,9 @@
 // See also: https://pub.dev/packages/pigeon
 // ignore_for_file: public_member_api_docs, non_constant_identifier_names, avoid_as, unused_import, unnecessary_parenthesis, unnecessary_import, no_leading_underscores_for_local_identifiers
 // ignore_for_file: avoid_relative_lib_imports
+//
+// Modified 2026 by Artificial Orctelligence for orcweather: raster tile
+// overlays, and hooks for the car screen. Apache-2.0 section 4(b).
 import 'dart:async';
 import 'dart:typed_data' show Float64List, Int32List, Int64List, Uint8List;
 import 'package:flutter/foundation.dart' show ReadBuffer, WriteBuffer;

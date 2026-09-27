@@ -12,6 +12,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * Modified 2026 by Artificial Orctelligence for orcweather: raster tile
+ * overlays, and hooks for the car screen. Apache-2.0 section 4(b).
  */
 
 package com.google.maps.flutter.navigation
@@ -334,8 +337,19 @@ open class AndroidAutoBaseScreen(carContext: CarContext) :
     mGoogleMap?.animateCamera(update) // map is set in onSurfaceAvailable.
   }
 
+  /**
+   * A minimal map template, for subclasses that do not provide their own.
+   *
+   * The action strip is not optional: `NavigationTemplate.Builder.build()` throws
+   * `IllegalStateException: Action strip for this template must be set`, so the previous version of
+   * this method — a map action strip alone — crashed the app on the car every time it was reached.
+   * That is only reachable when a subclass has no `onGetTemplate` of its own, which is easy to
+   * arrive at by accident, since deleting an override compiles cleanly. `Action.APP_ICON` satisfies
+   * the requirement without adding a button anybody has to think about.
+   */
   override fun onGetTemplate(): Template {
     return NavigationTemplate.Builder()
+      .setActionStrip(ActionStrip.Builder().addAction(Action.APP_ICON).build())
       .setMapActionStrip(ActionStrip.Builder().addAction(Action.PAN).build())
       .build()
   }
