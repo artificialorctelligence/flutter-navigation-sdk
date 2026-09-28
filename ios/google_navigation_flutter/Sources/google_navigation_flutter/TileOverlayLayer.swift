@@ -18,23 +18,32 @@ import GoogleMaps
 ///
 /// The template is resolved here rather than in Dart so tile bytes never cross the method
 /// channel: the maps SDK fetches, decodes and caches them on its own threads.
-class TileOverlayLayer: GMSURLTileLayer {
+///
+/// This holds a `GMSURLTileLayer` rather than subclassing one. That class exposes a single
+/// factory, `+tileLayerWithURLConstructor:`, and no initializer; Swift surfaces the factory as
+/// `GMSURLTileLayer(urlConstructor:)`, so a subclass's `super.init(urlConstructor:)` compiles and
+/// then aborts at runtime — `unrecognized selector sent to instance`, killing the app the first
+/// time Dart adds an overlay. `map` forwards so callers read the same as any other layer.
+class TileOverlayLayer {
   let tileOverlayId: String
   private(set) var urlTemplate: String
   private(set) var transparency: Double
 
-  // Unoptimized on purpose: this init hands an escaping closure to an ObjC super.init while the
-  // object is still partially initialized, and Swift 6.4's CopyPropagation pass aborts on that
-  // shape (fatal error in verifySILValueHelper, -O only). Drop the attribute once the toolchain
-  // compiles it; -Onone builds never needed it.
-  @_optimize(none)
+  private let layer: GMSURLTileLayer
+
+  /// The map this layer is attached to, or nil while detached — how visibility is expressed.
+  var map: GMSMapView? {
+    get { layer.map }
+    set { layer.map = newValue }
+  }
+
   init(tileOverlayId: String, options: TileOverlayOptionsDto) {
     self.tileOverlayId = tileOverlayId
     urlTemplate = options.urlTemplate
     transparency = options.transparency
 
     let template = options.urlTemplate
-    super.init(urlConstructor: { x, y, zoom in
+    layer = GMSURLTileLayer(urlConstructor: { x, y, zoom in
       let url =
         template
         .replacingOccurrences(of: "{x}", with: String(x))
@@ -44,17 +53,22 @@ class TileOverlayLayer: GMSURLTileLayer {
       return URL(string: url)
     })
 
-    tileSize = Int(options.tileSize)
+    layer.tileSize = Int(options.tileSize)
     apply(options: options)
   }
 
   /// Mutable options. The URL template and tile size are fixed at construction by the SDK.
   func apply(options: TileOverlayOptionsDto) {
-    zIndex = Int32(options.zIndex)
+    layer.zIndex = Int32(options.zIndex)
     transparency = options.transparency
     // Android expresses this as transparency, iOS as opacity: they are complements.
-    opacity = Float(1.0 - options.transparency)
-    fadeIn = options.fadeIn
+    layer.opacity = Float(1.0 - options.transparency)
+    layer.fadeIn = options.fadeIn
+  }
+
+  /// Drops the SDK's cached tiles for this layer — how a newer radar frame is forced in.
+  func clearTileCache() {
+    layer.clearTileCache()
   }
 
   func toPigeonTileOverlay() -> TileOverlayDto {
@@ -62,11 +76,11 @@ class TileOverlayLayer: GMSURLTileLayer {
       tileOverlayId: tileOverlayId,
       options: TileOverlayOptionsDto(
         urlTemplate: urlTemplate,
-        tileSize: Int64(tileSize),
-        zIndex: Double(zIndex),
+        tileSize: Int64(layer.tileSize),
+        zIndex: Double(layer.zIndex),
         transparency: transparency,
-        visible: map != nil,
-        fadeIn: fadeIn
+        visible: layer.map != nil,
+        fadeIn: layer.fadeIn
       )
     )
   }
