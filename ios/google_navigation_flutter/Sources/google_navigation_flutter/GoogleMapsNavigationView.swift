@@ -132,6 +132,18 @@ public class GoogleMapsNavigationView: NSObject, FlutterPlatformView, ViewSettle
     registerView()
 
     _mapView.delegate = self
+    // CarPlay counts its bars and map buttons as safe-area insets while they show, and they show
+    // and hide on every touch. Adjusting for them re-centred the map each time, so it slid about
+    // under the driver's finger (orcweather, 2026-10-03). The bars float over the map instead, as
+    // they do over Apple Maps.
+    if isCarPlayView {
+      _mapView.paddingAdjustmentBehavior = .never
+      // iOS 26's CarPlay dock floats over the left of the map and reports no inset — window, view and
+      // map all measured 0 (orcweather, 2026-10-03) — so with the adjustment off, Google's logo sat
+      // half under it, and Google's terms require it visible. 52 pt clears the ~49 pt dock with a gap (24 and 40 left the G under its glass edge).
+      // ponytail: fixed left gap; a car with its dock on the right is not detectable and is not covered.
+      _mapView.padding = UIEdgeInsets(top: 0, left: 52, bottom: 0, right: 0)
+    }
     _mapView.viewSettledDelegate = self
     _mapView.indoorDisplay.delegate = self
 

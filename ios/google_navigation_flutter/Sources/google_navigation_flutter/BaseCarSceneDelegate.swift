@@ -97,6 +97,8 @@ open class BaseCarSceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate
   ) {
     self.interfaceController = nil
     viewRegistry?.onHasCarPlayViewChanged = nil
+    carMapSettled = false
+    carMapRegistered = false
     carWindow?.rootViewController = nil
     carWindow = nil
     mapTemplate = nil
@@ -200,15 +202,29 @@ open class BaseCarSceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate
         // disconnected delegate alive and still sending availability events.
         self.viewRegistry?.onHasCarPlayViewChanged = { [weak self] isAvalable in
           self?.sendAutoScreenAvailabilityChangedEvent(isAvailable: isAvalable)
+          if isAvalable { self?.carMapRegistered = true; self?.announceCarMapIfReady() }
         }
 
-        // Registration is queued on the main queue when the view is built, so hopping once more puts
-        // the hook after it: by then Dart's GoogleMapsAutoViewController calls find the view.
+        // Ready means both: the map has settled, and the registry holds it, so Dart's
+        // GoogleMapsAutoViewController calls find it. Registration takes two queue hops and can land
+        // after the settle; announcing on the settle alone sent Dart's first calls into
+        // viewNotFound, and the car came up with no location dot (orcweather, 2026-10-03).
         self.navView?.awaitMapReady { [weak self] result in
           guard case .success = result else { return }
-          DispatchQueue.main.async { self?.onCarMapReady() }
+          self?.carMapSettled = true
+          self?.announceCarMapIfReady()
         }
       }
+  }
+
+  private var carMapSettled = false
+  private var carMapRegistered = false
+
+  private func announceCarMapIfReady() {
+    guard carMapSettled, carMapRegistered else { return }
+    carMapSettled = false
+    carMapRegistered = false
+    onCarMapReady()
   }
 
   /// Called once the CarPlay map is created and registered, so calls from Dart's
