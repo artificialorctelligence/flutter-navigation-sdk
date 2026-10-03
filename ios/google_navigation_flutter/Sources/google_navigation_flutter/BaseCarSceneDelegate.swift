@@ -63,7 +63,7 @@ open class BaseCarSceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate
     navView
   }
 
-  public func templateApplicationScene(
+  open func templateApplicationScene(
     _ templateApplicationScene: CPTemplateApplicationScene,
     didConnect interfaceController: CPInterfaceController,
     to window: CPWindow
@@ -96,6 +96,7 @@ open class BaseCarSceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate
     from window: CPWindow
   ) {
     self.interfaceController = nil
+    viewRegistry?.onHasCarPlayViewChanged = nil
     carWindow?.rootViewController = nil
     carWindow = nil
     mapTemplate = nil
@@ -195,11 +196,25 @@ open class BaseCarSceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate
         self.carWindow?.rootViewController = self.navViewController
         self.interfaceController?.setRootTemplate(self.mapTemplate!, animated: true) { _, _ in }
 
-        self.viewRegistry?.onHasCarPlayViewChanged = { isAvalable in
-          self.sendAutoScreenAvailabilityChangedEvent(isAvailable: isAvalable)
+        // Weak: the registry is the plugin's and outlives this scene, so a strong capture kept every
+        // disconnected delegate alive and still sending availability events.
+        self.viewRegistry?.onHasCarPlayViewChanged = { [weak self] isAvalable in
+          self?.sendAutoScreenAvailabilityChangedEvent(isAvailable: isAvalable)
+        }
+
+        // Registration is queued on the main queue when the view is built, so hopping once more puts
+        // the hook after it: by then Dart's GoogleMapsAutoViewController calls find the view.
+        self.navView?.awaitMapReady { [weak self] result in
+          guard case .success = result else { return }
+          DispatchQueue.main.async { self?.onCarMapReady() }
         }
       }
   }
+
+  /// Called once the CarPlay map is created and registered, so calls from Dart's
+  /// GoogleMapsAutoViewController will reach it. The counterpart of AndroidAutoBaseScreen's
+  /// onCarMapReady: anything that moves the camera before this gets viewNotFound.
+  open func onCarMapReady() {}
 
   // CPMapTemplateDelegate
   open func mapTemplate(
