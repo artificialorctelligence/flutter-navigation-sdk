@@ -138,11 +138,6 @@ public class GoogleMapsNavigationView: NSObject, FlutterPlatformView, ViewSettle
     // they do over Apple Maps.
     if isCarPlayView {
       _mapView.paddingAdjustmentBehavior = .never
-      // iOS 26's CarPlay dock floats over the left of the map and reports no inset — window, view and
-      // map all measured 0 (orcweather, 2026-10-03) — so with the adjustment off, Google's logo sat
-      // half under it, and Google's terms require it visible. 52 pt clears the ~49 pt dock with a gap (24 and 40 left the G under its glass edge).
-      // ponytail: fixed left gap; a car with its dock on the right is not detectable and is not covered.
-      _mapView.padding = UIEdgeInsets(top: 0, left: 52, bottom: 0, right: 0)
     }
     _mapView.viewSettledDelegate = self
     _mapView.indoorDisplay.delegate = self
@@ -497,6 +492,12 @@ public class GoogleMapsNavigationView: NSObject, FlutterPlatformView, ViewSettle
     }
   }
 
+  /// The map's padding, for a car app that has to keep its own UI clear: CarPlay's dock reports no
+  /// inset, and its guidance card covers the arrow unless the map is lifted.
+  public func setMapPadding(_ padding: UIEdgeInsets) {
+    _mapView.padding = padding
+  }
+
   public func getCameraPosition() -> GMSCameraPosition {
     _mapView.camera
   }
@@ -580,9 +581,9 @@ public class GoogleMapsNavigationView: NSObject, FlutterPlatformView, ViewSettle
   public func followMyLocation(perspective: GMSNavigationCameraPerspective, zoomLevel: Double?) {
     _mapView.followingPerspective = perspective
     _mapView.cameraMode = .following
-    if zoomLevel != nil {
-      _mapView.followingZoomLevel = Float(zoomLevel!)
-    }
+    // No zoom means the SDK's own, as on Android. Left alone, the last follow's zoom stuck: a tilted
+    // chase after an overhead follow stayed at the overhead zoom (orcweather CarPlay, 2026-10-03).
+    _mapView.followingZoomLevel = zoomLevel.map { Float($0) } ?? GMSNavigationNoFollowingZoomLevel
   }
 
   @discardableResult
